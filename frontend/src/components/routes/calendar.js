@@ -1,5 +1,5 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Button from '@material-ui/core/Button';
@@ -15,13 +15,14 @@ import "./Calendar.css";
 import { IconButton, Divider } from '@material-ui/core';
 
 import AutocompleteComponent from '../functions/autocomplete';
-import { useEffect } from 'react';
+import CreateRes from '../functions/createRes';
 
 const BigCalendar = () => {
-    let localizer, events = [];
+    let localizer, events2 = [];
 
     const [location, setLocation] = useState('');
     const [open, setOpen] = useState(false);
+    const [openReservation, setOpenReservation] = useState(false);
     const [eventInfo, setEventInfo] = useState({
         name: '',
         info: '',
@@ -41,7 +42,7 @@ const BigCalendar = () => {
                     headers: {"Content-Type":"application/json"},
                     body: JSON.stringify(bodyData)
                 });
-                events = await response.json();
+                events2 = await response.json();
                 console.log(events);
             }
             catch (err) {
@@ -64,6 +65,14 @@ const BigCalendar = () => {
     
     const handleClose = () => {
         setOpen(false);
+    };
+    
+    const handleOpenRes = () => {
+        setOpenReservation(true);
+    }
+
+    const handleCloseRes = () => {
+        setOpenReservation(false);
     };
     
     moment.updateLocale('fi', {
@@ -118,15 +127,29 @@ const BigCalendar = () => {
             backgroundColor: 'lightblue',
         },
         }) */
-    /*const events = [
+    const events = [
         {
             name: 'Markus',
             info: 'Koripallovuoro',
             start: new Date(2020, 0, 16, 12, 30),
             end: new Date(2020, 0, 16, 14, 30),
             location: "Monitoimisali"
+        },
+        {
+            name: 'Markus',
+            info: 'Jalkapallo',
+            start: new Date(2020, 0, 14, 10, 0),
+            end: new Date(2020, 0, 14, 11, 0),
+            location: "Monitoimisali"
+        },
+        {
+            name: 'Markus',
+            info: 'Amerikkalainen jalkapallo',
+            start: new Date(2020, 0, 15, 11, 0),
+            end: new Date(2020, 0, 15, 13, 0),
+            location: "Monitoimisali"
         }
-    ];*/
+    ];
 
     const messages = {
         allDay: 'Koko päivä',
@@ -149,7 +172,7 @@ const BigCalendar = () => {
 
     return(
         <div>
-            <AutocompleteComponent prop={setItemLocation}/>
+            <AutocompleteComponent prop={setItemLocation} setOpen={handleOpenRes}/>
 
             <p>Valittu tila: {location}</p>
 
@@ -167,30 +190,32 @@ const BigCalendar = () => {
                 endAccessor="end"
                 style={{ height: 750 }}
                 />
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle disableTypography className="top-buttons">
-                        {eventInfo.location}
-                        <IconButton>
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Aika: {eventInfo.start.getDate()}.{eventInfo.start.getMonth()+1}.{eventInfo.start.getFullYear()} klo {eventInfo.start.getHours()}:{eventInfo.start.getMinutes()} - {eventInfo.end.getHours()}:{eventInfo.end.getMinutes()}<br />
-                            Varaaja: {eventInfo.name}<br />
-                            Lisätietoja: {eventInfo.info}
-                            
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions className="bottom-buttons">
-                        <IconButton>
-                            <EditIcon />
-                        </IconButton>
-                        <IconButton>
-                            <DeleteIcon />
-                        </IconButton>
-                    </DialogActions>
-                </Dialog>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle disableTypography className="top-buttons">
+                    {eventInfo.location}
+                    <IconButton>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Aika: {eventInfo.start.getDate()}.{eventInfo.start.getMonth()+1}.{eventInfo.start.getFullYear()} klo {eventInfo.start.getHours()}:{eventInfo.start.getMinutes()} - {eventInfo.end.getHours()}:{eventInfo.end.getMinutes()}<br />
+                        Varaaja: {eventInfo.name}<br />
+                        Lisätietoja: {eventInfo.info}
+                        
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions className="bottom-buttons">
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton>
+                        <DeleteIcon />
+                    </IconButton>
+                </DialogActions>
+            </Dialog>
+
+            <CreateRes open={openReservation} handleClose={handleCloseRes} />
         </div>
     );
 }

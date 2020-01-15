@@ -81,18 +81,27 @@ export default function Create(props) {
     }, []);
 
     const [values, setValues] = useState({
-        username: '',
         password: '',
-        showPassword: false
+        passwordCheck: '',
+        showPassword: false,
+        showPasswordCheck: false
     });
 
     const handleChange = prop => event => {
         setValues({...values, [prop]: event.target.value});
     }
 
-    const handleClickPassword = () => {
-        setValues({...values, showPassword: !values.showPassword})
+    const handleChangeVerify = prop => event => {
+        setValues({...values, [prop]: event.target.value});
     }
+
+    const handleClickPassword = () => {
+        setValues({...values, showPassword: !values.showPassword});
+    };
+
+    const handleClickPasswordCheck = () => {
+        setValues({...values, showPasswordCheck: !values.showPasswordCheck});
+    };
 
     return (
         <React.Fragment>
@@ -107,7 +116,6 @@ export default function Create(props) {
                 margin="normal" 
                 id="outlined-firstname"
                 label="Etunimi"
-                multiline
                 variant="outlined"
                 />
                 <TextField
@@ -116,17 +124,16 @@ export default function Create(props) {
                 margin="normal" 
                 id="outlined-surname"
                 label="Sukunimi"
-                multiline
                 variant="outlined"
                 />
                 <br/>
                 <TextField
                 className={classes.big}
                 required
-                margin="normal" 
+                margin="normal"
+                input type="tel"
                 id="outlined-phone"
                 label="Puhelin"
-                multiline
                 variant="outlined"
                 />
                 <TextField
@@ -135,26 +142,25 @@ export default function Create(props) {
                 margin="normal" 
                 id="outlined-nro"
                 label="Opiskelijanumero"
-                multiline
                 variant="outlined"
                 />
                 <br/>
                 <TextField
                 className={classes.big}
                 required
-                margin="normal" 
+                margin="normal"
+                input type="email"
                 id="outlined-email"
                 label="Sähköposti"
-                multiline
                 variant="outlined"
                 />
                 <TextField
                 className={classes.big}
                 required
-                margin="normal" 
+                margin="normal"
+                input type="email"
                 id="outlined-emailAgain"
                 label="Sähköpostin vahvistus"
-                multiline
                 variant="outlined"
                 />
                 <br/>
@@ -163,11 +169,10 @@ export default function Create(props) {
                 required
                 margin="normal" 
                 id="outlined-password"
-                label="Salasana"
-                multiline
-                variant="outlined"
                 type={values.showPassword ? "text" : "password"}
-                        value={values.password}
+                value={values.password}
+                label="Salasana"
+                variant="outlined"
                 onChange={handleChange("password")}
                         InputProps={{
                             endAdornment: (
@@ -187,20 +192,19 @@ export default function Create(props) {
                 required
                 margin="normal" 
                 id="outlined-passwordAgain"
+                type={values.showPasswordCheck ? "text" : "password"}
+                value={values.passwordCheck}
                 label="Salasanan vahvistus"
-                multiline
                 variant="outlined"
-                type={values.showPassword ? "text" : "password"}
-                        value={values.password}
-                onChange={handleChange("password")}
+                onChange={handleChangeVerify("passwordCheck")}
                         InputProps={{
                             endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password"
-                                    onClick={handleClickPassword}
+                                    onClick={handleClickPasswordCheck}
                                     edge="end">
-                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {values.showPasswordCheck ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                             </InputAdornment>
                             ),

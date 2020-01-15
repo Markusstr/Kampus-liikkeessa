@@ -60,8 +60,8 @@ export default function Login(props) {
     }
 
     const handleClickPassword = () => {
-        setValues({...values, showPassword: !values.showPassword})
-    }
+        setValues({...values, showPassword: !values.showPassword});
+    };
 
     return (
         <div className={classes.root}>

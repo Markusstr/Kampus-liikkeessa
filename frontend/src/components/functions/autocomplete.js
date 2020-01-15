@@ -49,6 +49,10 @@ const AutocompleteComponent = props => {
         props.prop(event.target.value)
     }
 
+    const onClickOpen = (event) => {
+        props.setOpen(true);
+    } 
+
     return (
         <div className={classes.root}>
             <Autocomplete
@@ -69,7 +73,8 @@ const AutocompleteComponent = props => {
                 className={classes.buttonMargin}
                 style={{ width: 300 }}
                 variant="contained" 
-                color="primary">
+                color="primary"
+                onClick={(event) => onClickOpen()}>
                 Uusi varaus
             </Button>
         </div>
