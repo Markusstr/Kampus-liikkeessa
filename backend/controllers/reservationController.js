@@ -2,7 +2,7 @@ let Reservation = require('../models/Reservation');
 
 exports.getReservations = async (req, res) => {
     try {
-        const reservation = await Reservation.find();
+        const reservation = await Reservation.find({location: req.body.location});
         res.status(200).json(reservation);
     }
     catch (err) {
@@ -22,9 +22,10 @@ exports.removeReservation = async (req, res) => {
 
 exports.saveReservation = async (req, res) => {
     const reservation = new Reservation({
-        username: req.body.username,
-        date = req.body.date,
-        length = req.body.length
+        name: req.body.name,
+        start: req.body.start,
+        end: req.body.end,
+        location: req.body.location
     });
 
     try {
