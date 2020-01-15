@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import LanguageIcon from '@material-ui/icons/Language';
 import TextField from '@material-ui/core/TextField';
-    
+import { InputAdornment } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import {Redirect} from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -15,44 +15,97 @@ const useStyles = makeStyles(theme => ({
         color: "white",
         height: 70,
         '& .MuiTextField-root': {
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '600px',
+            margin: theme.spacing(2),
         },
     },
-    languageButton: {
+    login: {
         color: "black",
+        position: "absolute",
+        left: '50%',
+        top: 200,
+        transform: 'translate(-50%, -50%)',
+        width: '120px',
+        height: '40px',
     },
-    make: {
-        color: "black",
-        marginLeft: "auto",
-        marginRight: -12,
-        marginRight: theme.spacing(1)
-    },
-    support: {
-        color: "black",
-        edge: "start"
+    box: {
+        position: "absolute",
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
     },
 }));
 
 export default function Login(props) {
-  const classes = useStyles();
+    const classes = useStyles();
+/*     const handlePage = props.handleCurrentPage; */
 
-  return (
-    <div>
+    useEffect(() => {
+        props.handleCurrentPage("login");
+        if (props.loggedStatus) {
+            return <Redirect to="/"/>
+        }
+    }, []);
+
+    const [values, setValues] = useState({
+        username: '',
+        password: '',
+        showPassword: false
+    });
+
+    const handleChange = prop => event => {
+        setValues({...values, [prop]: event.target.value});
+    }
+
+    const handleClickPassword = () => {
+        setValues({...values, showPassword: !values.showPassword})
+    }
+
+    return (
         <div className={classes.root}>
-        <AppBar position="static" color="white">
-            <Toolbar>
-            <Button className={classes.support} color="inherit">Tuki</Button>
-            <Button className={classes.make} color="inherit">Luo tili</Button>
-            <IconButton className={classes.languageButton} color="inherit" aria-label="Language">
-                <LanguageIcon onClick={props.prop1} />
-            </IconButton>
-            </Toolbar>
-        </AppBar>
-        </div>
-        <form noValidate autoComplete="off">
-            <TextField fullWidth margin="normal" id="outlined-username" label="Käyttäjätunnus/sähköposti" type="text" InputLabelProps={{ shrink: true, }} variant="outlined"/>
-            <TextField fullWidth margin="normal" id="outlined-username" label="Salasana" type="text" InputLabelProps={{ shrink: true, }} variant="outlined"/>
-        </form>
-        {props.prop2 ? <p>totta</p> : <p>ei totta</p>}
-    </div>
+            <Box className={classes.box}>
+                <form noValidate autoComplete="off">
+                    <TextField
+                        position='absolute'
+                        margin="normal" 
+                        id="outlined-username" 
+                        value={values.username}
+                        label="Käyttäjätunnus/sähköposti" 
+                        type="text" 
+                        InputLabelProps={{ shrink: true }} 
+                        variant="outlined"
+                        onChange={handleChange("username")}
+                    />
+                    <br/>
+                    <TextField
+                        position='absolute'
+                        margin="normal"
+                        id="outlined-password" 
+                        type={values.showPassword ? "text" : "password"}
+                        value={values.password}
+                        label="Salasana"
+                        InputLabelProps={{ shrink: true }} 
+                        variant="outlined"
+                        onChange={handleChange("password")}
+                        InputProps={{
+                            endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password"
+                                    onClick={handleClickPassword}
+                                    edge="end">
+                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                            </InputAdornment>
+                            ),
+                        }}
+                        />
+                </form>
+                {props.loggedStatus ? <p>totta</p> : <p>ei totta</p>}
+                    <Button className={classes.login} color="inherit" variant="outlined">Kirjaudu</Button>
+                </Box>
+        </div>  
     );
 }

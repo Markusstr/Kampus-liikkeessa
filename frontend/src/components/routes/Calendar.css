@@ -1,0 +1,17 @@
+.calendar-container {
+    margin-top: 70px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bottom-buttons {
+    float: left;
+    right: 60px;
+}
+

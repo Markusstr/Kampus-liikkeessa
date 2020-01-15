@@ -1,43 +1,52 @@
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router,
   Switch,
-  Route,
-  Link }
+  Route }
 from "react-router-dom";
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import './App.css';
 import AppBar from './components/general/AppBar';
 import Calendar from './components/routes/calendar';
 import Login from './components/routes/login';
+import Create from './components/routes/createAccount';
+import About from './components/routes/about';
+
+/* Current page -variable shows the current page to the AppBar. */
 
 function App() {
 
   const [loggedStatus, setLoggedStatus] = useState(false);
+  const [currentPage, setCurrentPage] = useState("home");
 
   function handleLogin() {
     console.log("Successful function call.");
     setLoggedStatus(!loggedStatus);
+  }
+  function handleCurrentPage(parameter1) {
+    console.log("Successful function call.");
+    setCurrentPage(parameter1);
   }
 
   return (
   <Router>
     {/* Navbar is a specific class and a component, rendered before the router */}
     <div>
+      <AppBar loggedStatus={loggedStatus} currentPage={currentPage}/>
         <Switch>
           <Route exact path="/">
-            <AppBar prop1={loggedStatus}/>
-            <DefaultPort />
+            <DefaultPort handleCurrentPage={handleCurrentPage}/>
           </Route>
           <Route path="/login">
-            <Login prop1={handleLogin} prop2={loggedStatus}/>
+            <Login setLoggedStatus={handleLogin} loggedStatus={loggedStatus} handleCurrentPage={handleCurrentPage}/>
           </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/support">
+            <About handleCurrentPage={handleCurrentPage}/>
+          </Route>
+          <Route path="/createAccount">
+            <Create handleCurrentPage={handleCurrentPage}/>
           </Route>
           <Route path="/activity">
-            <Activity />
+            <p>Activity page</p>
           </Route>
         </Switch>
     </div>
@@ -46,24 +55,16 @@ function App() {
 }
 
 // Routers rendered as functions. Replace these with function or class components when components ready 
-const testList = [
-  { title: 'Test1' },
-  { title: 'Lappeenranta' },
-  { title: 'Testi' },
-  { title: 'Testaus' },
-];
 
-function DefaultPort() {
-  return (<Calendar/>);
-}
-function About () {
+function DefaultPort(props) {
+  const handleCurrentPageVar = props.handleCurrentPage;
+  useEffect(() => {
+    handleCurrentPageVar("home");
+  },[]);
+  
   return (
-    <div>About page</div>
+    <Calendar />
   )
 }
-function Activity () {
-  return (
-    <div>Activity page</div>
-  )
-}
+
 export default App;
