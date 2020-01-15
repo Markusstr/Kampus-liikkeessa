@@ -3,6 +3,7 @@ let express = require('express'),
 
     let reservationController = require('../controllers/reservationController');
     let userController = require('../controllers/userController');
+    let locationController = require('../controllers/locationController');
 
     router.post('/getReservations', (req, res) => {
         reservationController.getReservations(req, res);
@@ -36,3 +37,14 @@ let express = require('express'),
     router.post('/saveUser', (req, res) => {
         userController.saveUser(req, res);
     });
+
+
+    router.get('/getLocations', (req, res) => {
+        locationController.getLocations(req, res);
+    })
+
+    router.post('/saveLocation', (req, res) => {
+        locationController.saveLocation(req, res);
+    })
+
+    module.exports = router;
