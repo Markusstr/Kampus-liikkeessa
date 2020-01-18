@@ -174,7 +174,7 @@ const BigCalendar = () => {
         <div>
             <AutocompleteComponent prop={setItemLocation} setOpen={handleOpenRes}/>
 
-            <p>Valittu tila: {location}</p>
+            {/*<p>Valittu tila: {location}</p>*/}
 
             <Calendar className="calendar-container"
                 messages={messages}
