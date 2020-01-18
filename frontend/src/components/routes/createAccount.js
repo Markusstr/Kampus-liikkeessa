@@ -69,9 +69,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
 export default function Create(props) {
     const classes = useStyles();
     const handlePage = props.handleCurrentPage;
+
 
     useEffect(() => {
         handlePage("createAccount");
@@ -79,6 +81,7 @@ export default function Create(props) {
             return <Redirect to="/"/>
         }
     }, []);
+
 
     const [values, setValues] = useState({
         password: '',
@@ -103,131 +106,132 @@ export default function Create(props) {
         setValues({...values, showPasswordCheck: !values.showPasswordCheck});
     };
 
+
     return (
         <React.Fragment>
-            <CssBaseline />
+        <CssBaseline />
             <Container maxWidth="lg">
-            <div className={classes.root}>
-            <form noValidate autoComplete="off">
-                <p className={classes.keskitys}>* Tähdellä merkityt kentät ovat pakollisia.</p>
-                <TextField
-                className={classes.big}
-                required
-                margin="normal" 
-                id="outlined-firstname"
-                label="Etunimi"
-                variant="outlined"
-                />
-                <TextField
-                className={classes.big}
-                required
-                margin="normal" 
-                id="outlined-surname"
-                label="Sukunimi"
-                variant="outlined"
-                />
-                <br/>
-                <TextField
-                className={classes.big}
-                required
-                margin="normal"
-                input type="tel"
-                id="outlined-phone"
-                label="Puhelin"
-                variant="outlined"
-                />
-                <TextField
-                className={classes.big}
-                required
-                margin="normal" 
-                id="outlined-nro"
-                label="Opiskelijanumero"
-                variant="outlined"
-                />
-                <br/>
-                <TextField
-                className={classes.big}
-                required
-                margin="normal"
-                input type="email"
-                id="outlined-email"
-                label="Sähköposti"
-                variant="outlined"
-                />
-                <TextField
-                className={classes.big}
-                required
-                margin="normal"
-                input type="email"
-                id="outlined-emailAgain"
-                label="Sähköpostin vahvistus"
-                variant="outlined"
-                />
-                <br/>
-                <TextField
-                className={classes.big}
-                required
-                margin="normal" 
-                id="outlined-password"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                label="Salasana"
-                variant="outlined"
-                onChange={handleChange("password")}
-                        InputProps={{
-                            endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password"
-                                    onClick={handleClickPassword}
-                                    edge="end">
-                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                            </InputAdornment>
-                            ),
-                        }}
-                />
-                <TextField
-                className={classes.big}
-                required
-                margin="normal" 
-                id="outlined-passwordAgain"
-                type={values.showPasswordCheck ? "text" : "password"}
-                value={values.passwordCheck}
-                label="Salasanan vahvistus"
-                variant="outlined"
-                onChange={handleChangeVerify("passwordCheck")}
-                        InputProps={{
-                            endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password"
-                                    onClick={handleClickPasswordCheck}
-                                    edge="end">
-                                        {values.showPasswordCheck ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                            </InputAdornment>
-                            ),
-                        }}
-                />
-                <br/>
-                <TextField
-                className={classes.moreAbout}
-                id="outlined-multiline-static"
-                label="Lisätietoja"
-                multiline
-                rows="6"
-                variant="outlined"
-                />
-                <br/>
-                <Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button>
-                <Button className={classes.accept} color='inherit' variant="outlined">Luo</Button>
-            </form>
-            </div>
-            <Paper elevation={3}>
-            <Typography component="div" style={{ backgroundColor: 'white', height: '100vh' }} />
-            </Paper>
-        </Container>
-    </React.Fragment>  
+                <div className={classes.root}>
+                    <form noValidate autoComplete="off">
+                        <p className={classes.keskitys}>* Tähdellä merkityt kentät ovat pakollisia.</p>
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal" 
+                        id="outlined-firstname"
+                        label="Etunimi"
+                        variant="outlined"
+                        />
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal" 
+                        id="outlined-surname"
+                        label="Sukunimi"
+                        variant="outlined"
+                        />
+                        <br/>
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal"
+                        input type="tel"
+                        id="outlined-phone"
+                        label="Puhelin"
+                        variant="outlined"
+                        />
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal" 
+                        id="outlined-nro"
+                        label="Opiskelijanumero"
+                        variant="outlined"
+                        />
+                        <br/>
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal"
+                        input type="email"
+                        id="outlined-email"
+                        label="Sähköposti"
+                        variant="outlined"
+                        />
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal"
+                        input type="email"
+                        id="outlined-emailAgain"
+                        label="Sähköpostin vahvistus"
+                        variant="outlined"
+                        />
+                        <br/>
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal" 
+                        id="outlined-password"
+                        type={values.showPassword ? "text" : "password"}
+                        value={values.password}
+                        label="Salasana"
+                        variant="outlined"
+                        onChange={handleChange("password")}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password"
+                                            onClick={handleClickPassword}
+                                            edge="end">
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <TextField
+                        className={classes.big}
+                        required
+                        margin="normal" 
+                        id="outlined-passwordAgain"
+                        type={values.showPasswordCheck ? "text" : "password"}
+                        value={values.passwordCheck}
+                        label="Salasanan vahvistus"
+                        variant="outlined"
+                        onChange={handleChangeVerify("passwordCheck")}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password"
+                                            onClick={handleClickPasswordCheck}
+                                            edge="end">
+                                            {values.showPasswordCheck ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <br/>
+                        <TextField
+                        className={classes.moreAbout}
+                        id="outlined-multiline-static"
+                        label="Lisätietoja"
+                        multiline
+                        rows="6"
+                        variant="outlined"
+                        />
+                        <br/>
+                        <Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button>
+                        <Button className={classes.accept} color='inherit' variant="outlined">Luo</Button>
+                    </form>
+                </div>
+                <Paper elevation={3}>
+                    <Typography component="div" style={{ backgroundColor: 'white', height: '100vh' }} />
+                </Paper>
+            </Container>
+        </React.Fragment>  
     );
 }

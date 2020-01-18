@@ -63,6 +63,13 @@ export default function Login(props) {
         setValues({...values, showPassword: !values.showPassword});
     };
 
+    const handleLogin = () => {
+        props.setLoggedStatus();
+        return (
+            <Redirect to="/" />
+        )
+    }
+
     return (
         <div className={classes.root}>
             <Box className={classes.box}>
@@ -103,8 +110,13 @@ export default function Login(props) {
                         }}
                         />
                 </form>
-                {props.loggedStatus ? <p>totta</p> : <p>ei totta</p>}
-                    <Button className={classes.login} color="inherit" variant="outlined">Kirjaudu</Button>
+                <Button 
+                className={classes.login} 
+                onClick={() => {handleLogin()}}
+                color="inherit" 
+                variant="outlined">
+                Kirjaudu
+                </Button>
                 </Box>
         </div>  
     );

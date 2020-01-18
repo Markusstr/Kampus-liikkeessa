@@ -18,9 +18,9 @@ function App() {
   const [loggedStatus, setLoggedStatus] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
 
-  function handleLogin() {
+  function handleLogin(boolean) {
     console.log("Successful function call.");
-    setLoggedStatus(!loggedStatus);
+    setLoggedStatus(boolean);
   }
   function handleCurrentPage(parameter1) {
     console.log("Successful function call.");

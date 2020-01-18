@@ -25,7 +25,7 @@ export default function ButtonAppBar(props) {
 
   useEffect(() => {
     handlePage("support");
-  }, []);
+  }, [handlePage]);
 
   return (
     <div className={classes.root}>
