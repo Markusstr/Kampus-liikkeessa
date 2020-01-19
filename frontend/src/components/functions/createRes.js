@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
+import { Autocomplete } from '@material-ui/lab';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -62,7 +63,7 @@ const useStyles = makeStyles(theme => ({
         height: '60px',
     },
     moreAbout: {
-        width: '670px',
+        width: '520px',
     },
     keskitys: {
         color: "black",
@@ -85,46 +86,121 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(1),
     },
     createRes: {
-        minHeight: '80vh',
-        maxHeight: '80vh',
+        minHeight: '60vh',
+        maxHeight: '60vh',
+    },
+    endTimePicker: {
+        marginLeft: '20px',
     }
 }));
 
 
+
+
 const CreateRes = (props) => {
+
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        if (!loading) {
+            return undefined;
+        }
+
+        async function fetchData() {
+            try {
+                let response = await fetch("http://localhost:8080/api/getLocations");
+                let jsonData = await response.json()
+                setData(jsonData);
+                setLoading(false);
+            }
+            catch (err) {
+                console.log("Error while loading data");
+            }
+            
+        }
+        fetchData();
+    },[loading]);
+
     const classes = useStyles();
     const open = props.open;
     const handleClose = props.handleClose;
 
+    const [info, setInfo] = useState('');
+    const [location, setLocation] = useState('')
     const [date, setDate] = useState({
         selDate: new Date(),
         startTime: new Date(),
         endTime: new Date()
     });
 
-    const handleDateChange = date => {
-        setDate({...date, selDate: date})
+    const handleSelect = (event) => {
+        setLocation(event.target.value);
+    }
+
+    const handleDateChange = newDate => {
+        setDate({...date, selDate: newDate})
     };
 
-    const handleStartTimeChange = date => {
-        setDate({...date, startTime: date});
+    const handleStartTimeChange = newDate => {
+        setDate({...date, startTime: newDate});
     };
 
-    const handleEndTimeChange = date => {
-        setDate({...date, endTime: date});
+    const handleEndTimeChange = newDate => {
+        setDate({...date, endTime: newDate});
     };
+
+    const handleSubmit = async() => {
+        let startDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.startTime.getHours(), date.startTime.getMinutes());
+        let endDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.endTime.getHours(), date.endTime.getMinutes());
+        const bodyData = {
+            name: "Markus",
+            start: startDate,
+            end: endDate,
+            location: location,
+            info: info
+        };
+
+
+        console.log(bodyData);
+        try {
+            let response = await fetch("http://localhost:8080/api/saveReservation", {
+                method: "post",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(bodyData)
+            });
+            let newData = await response.json();
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <div>
             <Dialog
                 classes={{paper: classes.createRes}}
                 fullWidth
-                maxWidth='md'
+                maxWidth='sm'
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="max-width-dialog-title">
                 <DialogTitle id="max-width-dialog-title">Uusi varaus</DialogTitle>
                 <DialogContent>
+                    <Autocomplete
+                        className={classes.center}
+                        id="combo-box"
+                        options={data}
+                        getOptionLabel={option => option.name}
+                        loading={loading}
+                        onSelect={handleSelect}
+                        loadingText="Ladataan..."
+                        style={{ width: '50%' }}
+                        renderInput={params => (
+                            <TextField {...params} label="Haku" variant="outlined" fullWidth />
+                        )}
+                    />
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
@@ -150,18 +226,20 @@ const CreateRes = (props) => {
                                 'aria-label': 'change time',
                             }}*/
                             disableToolbar
+                            ampm={false}
                             variant="inline"
-                            format="hh:mm"
+                            format="HH:mm"
                             margin="normal"
-                            id="time-picker-inline"
+                            id="time-picker-start"
                             label="Varaus alkaa"
                             value={date.startTime}
                             onChange={handleStartTimeChange}
+                            onAccept={() => console.log("test")}
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
                         />
-                        <KeyboardTimePicker
+                        <KeyboardTimePicker className={classes.endTimePicker}
                             /*margin="normal"
                             id="time-picker"
                             label="Time picker"
@@ -171,16 +249,18 @@ const CreateRes = (props) => {
                                 'aria-label': 'change time',
                             }}*/
                             disableToolbar
+                            ampm={false}
                             variant="inline"
+                            format="HH:mm"
                             margin="normal"
-                            id="time-picker-inline"
+                            id="time-picker-end"
                             label="Varaus päättyy"
                             value={date.endTime}
                             onChange={handleEndTimeChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
-                        />
+                        /> 
                     </MuiPickersUtilsProvider>
                     <form noValidate autoComplete="off">
                         <br />
@@ -191,10 +271,12 @@ const CreateRes = (props) => {
                             multiline
                             rows="6"
                             variant="outlined"
+                            value={info}
+                            onChange={(event => setInfo(event.target.value))}
                         />
                         <br />
                         <Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button>
-                        <Button className={classes.accept} color='inherit' variant="outlined">Luo</Button>
+                        <Button className={classes.accept} onClick={handleSubmit} color='inherit' variant="outlined">Luo</Button>
                     </form>
                 </DialogContent>
             </Dialog>
