@@ -25,9 +25,10 @@ exports.saveReservation = async (req, res) => {
         name: req.body.name,
         start: req.body.start,
         end: req.body.end,
-        location: req.body.location
+        location: req.body.location,
+        info: req.body.info
     });
-
+    
     try {
         const savedReservation = await reservation.save();
         res.status(200).json(savedReservation);

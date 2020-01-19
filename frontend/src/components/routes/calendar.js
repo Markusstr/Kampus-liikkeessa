@@ -18,8 +18,9 @@ import AutocompleteComponent from '../functions/autocomplete';
 import CreateRes from '../functions/createRes';
 
 const BigCalendar = () => {
-    let localizer, events2 = [];
+    let localizer;
 
+    const [events, setEvents] = useState([]);
     const [location, setLocation] = useState('');
     const [open, setOpen] = useState(false);
     const [openReservation, setOpenReservation] = useState(false);
@@ -42,8 +43,16 @@ const BigCalendar = () => {
                     headers: {"Content-Type":"application/json"},
                     body: JSON.stringify(bodyData)
                 });
-                events2 = await response.json();
-                console.log(events);
+                response = await response.json();
+                let parsedResponse = response.map(elem => ({
+                        name: elem.name,
+                        start: new Date(elem.start),
+                        end: new Date(elem.end),
+                        location: elem.location,
+                        info: elem.info
+                    }));
+                setEvents(parsedResponse);
+                console.log(parsedResponse)
             }
             catch (err) {
                 console.log(err);
@@ -127,7 +136,7 @@ const BigCalendar = () => {
             backgroundColor: 'lightblue',
         },
         }) */
-    const events = [
+    /*const events = [
         {
             name: 'Markus',
             info: 'Koripallovuoro',
@@ -149,7 +158,7 @@ const BigCalendar = () => {
             end: new Date(2020, 0, 15, 13, 0),
             location: "Monitoimisali"
         }
-    ];
+    ];*/
 
     const messages = {
         allDay: 'Koko päivä',
