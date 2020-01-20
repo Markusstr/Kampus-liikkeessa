@@ -54,19 +54,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ComponentCreate() {
+function ComponentCreate(props) {
   const classes = useStyles();
   return (
-  <Link to="/createAccount" className={classes.make}>
-    <Button color="inherit">Luo tili</Button>
+  <Link to="/createAccount" className={classes.make} disabled={props.disabled}>
+    <Button color="inherit" disabled={props.disabled}>Luo tili</Button>
   </Link>)
 }
 
-function ComponentLogin() {
+function ComponentLogin(props) {
   const classes = useStyles();
   return (
-  <Link to="/login" className={classes.login}>
-    <Button color="inherit">Kirjaudu</Button>
+  <Link to="/login" className={classes.login} disabled={props.disabled}>
+    <Button color="inherit" disabled={props.disabled}>Kirjaudu</Button>
   </Link>)
 }
 
@@ -96,37 +96,24 @@ export default function ButtonAppBar(props) {
 
   function AppBarContent() {
     if (props.loggedStatus) {
-      return (<Button 
-        className={classes.login}
-        color="inherit"
-        onClick={() => {handleLogout()}}>
-        Kirjaudu ulos</Button>);
+      return (
+        <div>
+          <Button 
+            className={classes.login}
+            color="inherit"
+            onClick={() => {handleLogout()}}>
+            Kirjaudu ulos
+            </Button>
+          <ComponentLanguage />
+        </div>);
     }
     else {
-      if (props.currentPage.localeCompare("login")===0) {
-        return (
-          <div>
-            <ComponentCreate/>
-            <ComponentLanguage />
-          </div>
-        );
-      }
-      else if (props.currentPage.localeCompare("createAccount")===0) {
-        return (
-          <div>
-          <ComponentLogin />
-          <ComponentLanguage />
-          </div>);
-      }
-      else {
-        return(
-          <div>
-            <ComponentLogin />
-            <ComponentCreate />
-            <ComponentLanguage />
-          </div>
-        );
-      }
+      return (      
+      <div>
+        <ComponentLogin disabled={props.currentPage.localeCompare("login")===0}/>
+        <ComponentCreate disabled={props.currentPage.localeCompare("createAccount")===0}/>
+        <ComponentLanguage />
+      </div>);
     }
   }
 
@@ -134,6 +121,7 @@ export default function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar className={classes.appBarColor} color="inherit">
         <Toolbar>
+
           <Link to="/" className={classes.Home}>
             <IconButton className={classes.Home} color="inherit" aria-label="Home">
                 <HomeIcon />

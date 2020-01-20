@@ -22,6 +22,7 @@ const BigCalendar = () => {
 
     const [events, setEvents] = useState([]);
     const [location, setLocation] = useState('');
+    const [update, setUpdate] = useState(false);
     const [open, setOpen] = useState(false);
     const [openReservation, setOpenReservation] = useState(false);
     const [eventInfo, setEventInfo] = useState({
@@ -33,6 +34,11 @@ const BigCalendar = () => {
     });
 
     useEffect(() => {
+        
+        if (!update) {
+            return undefined;
+        }
+
         async function fetchData() {
             const bodyData = {
                 location: location
@@ -57,14 +63,15 @@ const BigCalendar = () => {
             catch (err) {
                 console.log(err);
             }
+            setCalendarUpdate(false);
         }
 
         fetchData();
 
-    },[location]);
+    },[update]);
 
-    const setItemLocation = params1 => {
-        setLocation(params1);
+    const setCalendarUpdate = params1 => {
+        setUpdate(params1);
     }
 
     const handleClickOpen = event => {
@@ -181,9 +188,9 @@ const BigCalendar = () => {
 
     return(
         <div>
-            <AutocompleteComponent prop={setItemLocation} setOpen={handleOpenRes}/>
+            <AutocompleteComponent prop={setLocation} prop2={setCalendarUpdate} setOpen={handleOpenRes}/>
 
-            {/*<p>Valittu tila: {location}</p>*/}
+            {/*<p>Valittu tila: {locatiosn}</p>*/}
 
             <Calendar className="calendar-container"
                 messages={messages}
@@ -224,7 +231,7 @@ const BigCalendar = () => {
                 </DialogActions>
             </Dialog>
 
-            <CreateRes open={openReservation} handleClose={handleCloseRes} />
+            <CreateRes updateCalendar={setCalendarUpdate} open={openReservation} handleClose={handleCloseRes} />
         </div>
     );
 }

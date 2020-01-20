@@ -69,6 +69,53 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+function validate(firstname, surname, phone, studentnro, email, emailconfirm, password, passwordconfirm) {
+    const errors = [];
+    
+    // onko vaaditut kentät täytetty
+    if (firstname.length === 0) {
+      errors.push("Täytä kaikki vaadittavat kentät!");
+    }
+
+    if (surname.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    }
+
+    if (phone.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    }
+
+    if (studentnro.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    }
+
+    //sposti tarkastukset
+    if (email.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    } else if (email.split("").filter(x => x === "@").length !== 1) {
+        errors.push("Sähköpostiosoitteen pitää sisältää @-merkki!");
+    } else if (email.indexOf(".") === -1) {
+        errors.push("Sähköpostiosoitteen pitää sisältää piste!");
+    } else if (emailconfirm.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    } else if (emailconfirm != email) {
+        errors.push("Sähköpostiosoitteet eivät täsmää!");
+    }
+    
+    //salasanan tarkastukset
+    if (password.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    } else if (passwordconfirm.length === 0) {
+        errors.push("Täytä kaikki vaadittavat kentät!");
+    } else if (password.length <= 8) {
+        errors.push("Salasanasi pitää olla vähintään 8 merkkiä pitkä, sekä sen pitää sisältää pienijä ja isoja kirjaimija sekä vähintään yksi numero!");
+    } else if(password != passwordconfirm) {
+        errors.push("Salasanasi eivät täsmää!");
+    }
+  
+    return errors;
+  }
+
 
 export default function Create(props) {
     const classes = useStyles();
@@ -81,7 +128,6 @@ export default function Create(props) {
             return <Redirect to="/"/>
         }
     }, []);
-
 
     const [values, setValues] = useState({
         password: '',

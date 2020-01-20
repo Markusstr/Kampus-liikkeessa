@@ -171,10 +171,12 @@ const CreateRes = (props) => {
                 body: JSON.stringify(bodyData)
             });
             let newData = await response.json();
+            props.updateCalendar(true);
         }
         catch (err) {
             console.log(err);
         }
+        props.handleClose();
     }
 
     return (
@@ -208,7 +210,7 @@ const CreateRes = (props) => {
                             format="dd.MM.yyyy"
                             margin="normal"
                             id="date-picker-inline"
-                            label="Date picker inline"
+                            label="Päivämäärä"
                             value={date.selDate}
                             onChange={handleDateChange}
                             KeyboardButtonProps={{

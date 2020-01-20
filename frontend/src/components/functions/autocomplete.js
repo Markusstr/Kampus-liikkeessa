@@ -46,7 +46,8 @@ const AutocompleteComponent = props => {
     },[loading]);
 
     const handleSelect = (event) => {
-        props.prop(event.target.value)
+        props.prop(event.target.value);
+        props.prop2(true);
     }
 
     const onClickOpen = (event) => {
