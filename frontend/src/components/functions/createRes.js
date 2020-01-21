@@ -277,7 +277,7 @@ const CreateRes = (props) => {
                             onChange={(event => setInfo(event.target.value))}
                         />
                         <br />
-                        <Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button>
+                        <Button className={classes.cancel} onClick={props.handleClose}color='inherit' variant="outlined">Peruuta</Button>
                         <Button className={classes.accept} onClick={handleSubmit} color='inherit' variant="outlined">Luo</Button>
                     </form>
                 </DialogContent>
