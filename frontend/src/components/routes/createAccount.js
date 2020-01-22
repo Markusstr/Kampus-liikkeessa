@@ -98,7 +98,7 @@ function validate(firstname, surname, phone, studentnro, email, emailconfirm, pa
         errors.push("Sähköpostiosoitteen pitää sisältää piste!");
     } else if (emailconfirm.length === 0) {
         errors.push("Täytä kaikki vaadittavat kentät!");
-    } else if (emailconfirm != email) {
+    } else if (emailconfirm !== email) {
         errors.push("Sähköpostiosoitteet eivät täsmää!");
     }
     
@@ -109,7 +109,7 @@ function validate(firstname, surname, phone, studentnro, email, emailconfirm, pa
         errors.push("Täytä kaikki vaadittavat kentät!");
     } else if (password.length <= 8) {
         errors.push("Salasanasi pitää olla vähintään 8 merkkiä pitkä, sekä sen pitää sisältää pienijä ja isoja kirjaimija sekä vähintään yksi numero!");
-    } else if(password != passwordconfirm) {
+    } else if(password !== passwordconfirm) {
         errors.push("Salasanasi eivät täsmää!");
     }
   
