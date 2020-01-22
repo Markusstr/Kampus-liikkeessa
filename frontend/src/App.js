@@ -35,7 +35,7 @@ function App() {
       <AppBar loggedStatus={loggedStatus} currentPage={currentPage} setLoggedStatus={handleLogin}/>
         <Switch>
           <Route exact path="/">
-            <DefaultPort handleCurrentPage={handleCurrentPage}/>
+            <DefaultPort handleCurrentPage={handleCurrentPage} loggedStatus={loggedStatus}/>
           </Route>
           <Route path="/login">
             {loggedStatus ? 
@@ -66,7 +66,7 @@ function DefaultPort(props) {
   },[]);
   
   return (
-    <Calendar />
+    <Calendar loggedStatus={props.loggedStatus} handleCurrentPage={props.handleCurrentPage} />
   )
 }
 

@@ -70,6 +70,7 @@ const AutocompleteComponent = props => {
                 )}
             />
             <br />
+            {props.loggedStatus ? 
             <Button 
                 className={classes.buttonMargin}
                 style={{ width: 300 }}
@@ -78,6 +79,9 @@ const AutocompleteComponent = props => {
                 onClick={(event) => onClickOpen()}>
                 Uusi varaus
             </Button>
+            :
+            <div></div>
+            }
         </div>
     );
 }

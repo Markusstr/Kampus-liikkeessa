@@ -17,7 +17,7 @@ import { IconButton, Divider } from '@material-ui/core';
 import AutocompleteComponent from '../functions/autocomplete';
 import CreateRes from '../functions/createRes';
 
-const BigCalendar = () => {
+const BigCalendar = (props) => {
     let localizer;
 
     const [events, setEvents] = useState([]);
@@ -188,7 +188,7 @@ const BigCalendar = () => {
 
     return(
         <div>
-            <AutocompleteComponent prop={setLocation} prop2={setCalendarUpdate} setOpen={handleOpenRes}/>
+            <AutocompleteComponent prop={setLocation} loggedStatus={props.loggedStatus} prop2={setCalendarUpdate} setOpen={handleOpenRes}/>
 
             {/*<p>Valittu tila: {locatiosn}</p>*/}
 
