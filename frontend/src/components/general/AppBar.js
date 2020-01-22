@@ -9,6 +9,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import LanguageIcon from '@material-ui/icons/Language';
 import HomeIcon from '@material-ui/icons/Home';
 import Paper from '@material-ui/core/Paper';
+import { FormatUnderlined } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,10 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
   },
   login: {
+    color: "black",
+    marginLeft: theme.spacing(1),
+  },
+  logout: {
     color: "black",
     marginLeft: theme.spacing(1),
   },
@@ -50,6 +55,12 @@ const useStyles = makeStyles(theme => ({
     marginLeft: "auto",
     marginRight: 0,
   },
+  background: {
+    backgroundColor: "lightGray",
+  },
+  notSel: {
+    backgroundColor: "white",
+  },
   flagSize: {
   },
 }));
@@ -57,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 function ComponentCreate(props) {
   const classes = useStyles();
   return (
-  <Link to="/createAccount" className={classes.make} disabled={props.disabled}>
+  <Link to="/createAccount" className={classes.make} disabled={props.disabled} style={{textDecoration: "none"}}>
     <Button color="inherit" disabled={props.disabled}>Luo tili</Button>
   </Link>)
 }
@@ -65,7 +76,7 @@ function ComponentCreate(props) {
 function ComponentLogin(props) {
   const classes = useStyles();
   return (
-  <Link to="/login" className={classes.login} disabled={props.disabled}>
+  <Link to="/login" className={classes.login} disabled={props.disabled} style={{textDecoration: "none"}}>
     <Button color="inherit" disabled={props.disabled}>Kirjaudu</Button>
   </Link>)
 }
@@ -90,8 +101,18 @@ function ComponentLanguage() {
 export default function ButtonAppBar(props) {
 
   const classes = useStyles();
+
   const handleLogout = () => {
     props.setLoggedStatus(false);
+  }
+
+  function buttonClicked() {
+    if (props.currentPage.localeCompare("support")===0) {
+      return classes.background;
+    }
+    else {
+      return classes.notSel;
+    }
   }
 
   function AppBarContent() {
@@ -99,7 +120,7 @@ export default function ButtonAppBar(props) {
       return (
         <div>
           <Button 
-            className={classes.login}
+            className={classes.logout}
             color="inherit"
             onClick={() => {handleLogout()}}>
             Kirjaudu ulos
@@ -122,17 +143,16 @@ export default function ButtonAppBar(props) {
       <AppBar className={classes.appBarColor} color="inherit">
         <Toolbar>
 
-          <Link to="/" className={classes.Home}>
+          <Link to="/" className={classes.Home} style={{textDecoration: "none"}}>
             <IconButton className={classes.Home} color="inherit" aria-label="Home">
                 <HomeIcon />
             </IconButton>
           </Link>
-          {props.currentPage.localeCompare("support")===0 ? <p className={classes.support}></p> : 
-            <Link to="/support" className={classes.support}>
-              <Button color="inherit">Tuki</Button>
-            </Link>
-          }
-          <Link to="/" className={classes.Logo}>
+
+          <Link to="/support" className={classes.support} className={buttonClicked()} style={{textDecoration: "none"}}>
+            <Button color="inherit">Tuki</Button>
+          </Link>
+          <Link to="/" className={classes.Logo} style={{textDecoration: "none"}}>
             <IconButton aria-label="Logo">
               <img src={`${process.env.PUBLIC_URL}/KampusLiikkessaLogo.svg`} />
             </IconButton>

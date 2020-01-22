@@ -64,10 +64,8 @@ export default function Login(props) {
     };
 
     const handleLogin = () => {
-        props.setLoggedStatus();
-        return (
-            <Redirect to="/" />
-        )
+        props.setLoggedStatus(true);
+        console.log("Success handle");
     }
 
     return (
@@ -110,12 +108,11 @@ export default function Login(props) {
                         }}
                         />
                 </form>
-                <Button 
-                className={classes.login} 
-                onClick={() => {handleLogin()}}
-                color="inherit" 
-                variant="outlined">
-                Kirjaudu
+                <Button className={classes.login} 
+                    onClick={() => {handleLogin()}}
+                    color="inherit" 
+                    variant="outlined">
+                    Kirjaudu
                 </Button>
                 </Box>
         </div>  

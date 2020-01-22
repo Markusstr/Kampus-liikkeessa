@@ -2,7 +2,8 @@
 import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router,
   Switch,
-  Route }
+  Route,
+  Redirect }
 from "react-router-dom";
 import './App.css';
 import AppBar from './components/general/AppBar';
@@ -31,13 +32,15 @@ function App() {
   <Router>
     {/* Navbar is a specific class and a component, rendered before the router */}
     <div>
-      <AppBar loggedStatus={loggedStatus} currentPage={currentPage}/>
+      <AppBar loggedStatus={loggedStatus} currentPage={currentPage} setLoggedStatus={handleLogin}/>
         <Switch>
           <Route exact path="/">
             <DefaultPort handleCurrentPage={handleCurrentPage}/>
           </Route>
           <Route path="/login">
-            <Login setLoggedStatus={handleLogin} loggedStatus={loggedStatus} handleCurrentPage={handleCurrentPage}/>
+            {loggedStatus ? 
+            <Redirect to="/"/> 
+            : <Login setLoggedStatus={handleLogin} loggedStatus={loggedStatus} handleCurrentPage={handleCurrentPage}/>}
           </Route>
           <Route path="/support">
             <About handleCurrentPage={handleCurrentPage}/>
