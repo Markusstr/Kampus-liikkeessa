@@ -181,7 +181,7 @@ export default function Create(props) {
                         className={classes.big}
                         required
                         margin="normal"
-                        input type="tel"
+                        type="tel"
                         id="outlined-phone"
                         label="Puhelin"
                         variant="outlined"
@@ -199,7 +199,7 @@ export default function Create(props) {
                         className={classes.big}
                         required
                         margin="normal"
-                        input type="email"
+                        type="email"
                         id="outlined-email"
                         label="Sähköposti"
                         variant="outlined"
@@ -208,7 +208,7 @@ export default function Create(props) {
                         className={classes.big}
                         required
                         margin="normal"
-                        input type="email"
+                        type="email"
                         id="outlined-emailAgain"
                         label="Sähköpostin vahvistus"
                         variant="outlined"
