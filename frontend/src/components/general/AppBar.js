@@ -6,10 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import LanguageIcon from '@material-ui/icons/Language';
 import HomeIcon from '@material-ui/icons/Home';
-import Paper from '@material-ui/core/Paper';
-import { FormatUnderlined } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -104,6 +101,7 @@ export default function ButtonAppBar(props) {
 
   const handleLogout = () => {
     props.setLoggedStatus(false);
+    props.setUsername('');
   }
 
   function buttonClicked() {

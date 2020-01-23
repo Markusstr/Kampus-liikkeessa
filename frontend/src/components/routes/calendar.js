@@ -8,11 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CloseIcon from '@material-ui/icons/Close';
 import "./Calendar.css";
-import { IconButton, Divider } from '@material-ui/core';
 
 import AutocompleteComponent from '../functions/autocomplete';
 import CreateRes from '../functions/createRes';
@@ -30,7 +26,8 @@ const BigCalendar = (props) => {
         info: '',
         start: new Date(),
         end: new Date(),
-        location: ''
+        location: '',
+        id: ''
     });
 
     useEffect(() => {
@@ -55,10 +52,11 @@ const BigCalendar = (props) => {
                         start: new Date(elem.start),
                         end: new Date(elem.end),
                         location: elem.location,
-                        info: elem.info
+                        info: elem.info,
+                        id: elem._id
                     }));
                 setEvents(parsedResponse);
-                console.log(parsedResponse)
+                console.log(parsedResponse);
             }
             catch (err) {
                 console.log(err);
@@ -68,7 +66,7 @@ const BigCalendar = (props) => {
 
         fetchData();
 
-    },[update]);
+    },[update, location]);
 
     const setCalendarUpdate = params1 => {
         setUpdate(params1);
@@ -90,6 +88,27 @@ const BigCalendar = (props) => {
     const handleCloseRes = () => {
         setOpenReservation(false);
     };
+
+    const removeReservation = async () => {
+        const bodyData = {
+            id: eventInfo.id
+        };
+        console.log(bodyData);
+        try {
+            let response = await fetch("http://localhost:8080/api/removeReservation", {
+                method: "post",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(bodyData)
+            });
+            response = await response.json();
+            console.log(response);
+        }
+        catch (err) {
+            console.log(err);
+        }
+        setCalendarUpdate(true);
+        setOpen(false);
+    }
     
     moment.updateLocale('fi', {
         months: 'tammikuu_helmikuu_maaliskuu_huhtikuu_toukokuu_kesäkuu_heinäkuu_elokuu_syyskuu_lokakuu_marraskuu_joulukuu'.split('_'),
@@ -204,14 +223,29 @@ const BigCalendar = (props) => {
                 scrollToTime={new Date(date.getFullYear(), date.getMonth(), date.getDate(), 8)}
                 startAccessor="start"
                 endAccessor="end"
+                eventPropGetter={
+                    (event, start, end, isSelected) => {
+                      let newStyle = {
+                        backgroundColor: "#3165ac",
+                        color: 'white',
+                        borderRadius: "5px",
+                        border: "none"
+                      };
+                      if (props.username === event.name){
+                        newStyle.backgroundColor = "#cf970c"
+                      }
+                
+                      return {
+                        className: "",
+                        style: newStyle
+                      };
+                    }
+                }
                 style={{ height: 750 }}
                 />
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle disableTypography className="top-buttons">
                     {eventInfo.location}
-                    <IconButton>
-                        <CloseIcon />
-                    </IconButton>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -222,16 +256,15 @@ const BigCalendar = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions className="bottom-buttons">
-                    <IconButton>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton>
+                    {/*<IconButton>
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton>*/}
+                    <Button onClick={() => setOpen(false)}>Peruuta</Button>
+                    {props.username === eventInfo.name ? <Button onClick={removeReservation}>Poista</Button> : ''}
                 </DialogActions>
             </Dialog>
 
-            <CreateRes updateCalendar={setCalendarUpdate} open={openReservation} handleClose={handleCloseRes} />
+            <CreateRes updateCalendar={setCalendarUpdate} open={openReservation} handleClose={handleCloseRes} username={props.username} />
         </div>
     );
 }

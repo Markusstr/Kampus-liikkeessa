@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
-import Switch from '@material-ui/core/Switch';
 import { Autocomplete } from '@material-ui/lab';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -155,7 +149,7 @@ const CreateRes = (props) => {
         let startDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.startTime.getHours(), date.startTime.getMinutes());
         let endDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.endTime.getHours(), date.endTime.getMinutes());
         const bodyData = {
-            name: "Markus",
+            name: props.username,
             start: startDate,
             end: endDate,
             location: location,
