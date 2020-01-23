@@ -65,6 +65,7 @@ export default function Login(props) {
 
     const handleLogin = () => {
         props.setLoggedStatus(true);
+        props.setUsername(values.username);
         console.log("Success handle");
     }
 

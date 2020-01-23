@@ -18,6 +18,7 @@ function App() {
 
   const [loggedStatus, setLoggedStatus] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
+  const [username, setUsername] = useState('');
 
   function handleLogin(boolean) {
     console.log("Successful function call.");
@@ -27,20 +28,24 @@ function App() {
     console.log("Successful function call.");
     setCurrentPage(parameter1);
   }
+  function handleUsernameChange(username) {
+    console.log("Username changed.");
+    setUsername(username);
+  }
 
   return (
   <Router>
     {/* Navbar is a specific class and a component, rendered before the router */}
     <div>
-      <AppBar loggedStatus={loggedStatus} currentPage={currentPage} setLoggedStatus={handleLogin}/>
+      <AppBar loggedStatus={loggedStatus} currentPage={currentPage} setLoggedStatus={handleLogin} setUsername={handleUsernameChange} />
         <Switch>
           <Route exact path="/">
-            <DefaultPort handleCurrentPage={handleCurrentPage} loggedStatus={loggedStatus}/>
+            <DefaultPort handleCurrentPage={handleCurrentPage} loggedStatus={loggedStatus} username={username} />
           </Route>
           <Route path="/login">
             {loggedStatus ? 
             <Redirect to="/"/> 
-            : <Login setLoggedStatus={handleLogin} loggedStatus={loggedStatus} handleCurrentPage={handleCurrentPage}/>}
+            : <Login setLoggedStatus={handleLogin} loggedStatus={loggedStatus} setUsername={handleUsernameChange} handleCurrentPage={handleCurrentPage}/>}
           </Route>
           <Route path="/support">
             <About handleCurrentPage={handleCurrentPage}/>
@@ -66,7 +71,7 @@ function DefaultPort(props) {
   },[]);
   
   return (
-    <Calendar loggedStatus={props.loggedStatus} handleCurrentPage={props.handleCurrentPage} />
+    <Calendar loggedStatus={props.loggedStatus} username={props.username} handleCurrentPage={props.handleCurrentPage} />
   )
 }
 
