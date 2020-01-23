@@ -15,10 +15,8 @@ exports.saveLocation = async (req, res) => {
     console.log(req.body.name + ":" + req.body.address);
     const location = new Location({
         name: req.body.name,
-        date: req.body.address
+        address: req.body.address
     });
-
-    console.log(location);
 
     try {
         const savedLocation = await location.save();
