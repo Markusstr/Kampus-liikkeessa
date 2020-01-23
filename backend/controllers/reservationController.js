@@ -13,7 +13,7 @@ exports.getReservations = async (req, res) => {
 exports.removeReservation = async (req, res) => {
     try {
         const reservation = await Reservation.deleteOne({_id: req.body.id});
-        res.status(200).json(post);
+        res.status(200).json(reservation);
     }
     catch (err) {
         res.status(404).json({error: err});
