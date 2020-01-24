@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         color: "white",
         height: 70,
-        top: 200,
+        top: 130,
         position: "absolute",
         left: '50%',
         transform: 'translate(-50%)',
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     accept: {
         color: "black",
         position: "absolute",
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(6),
         left: '75%',
         transform: 'translate(-50%)', 
         width: '120px',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     cancel: {
         color: "black",
         position: "absolute",
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(6),
         left: '25%',
         transform: 'translate(-50%)', 
         width: '120px',
