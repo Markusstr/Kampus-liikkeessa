@@ -104,8 +104,8 @@ export default function ButtonAppBar(props) {
     props.setUsername('');
   }
 
-  function buttonClicked() {
-    if (props.currentPage.localeCompare("support")===0) {
+  function buttonClicked(inputString) {
+    if (props.currentPage.localeCompare(inputString)===0) {
       return classes.background;
     }
     else {
@@ -129,7 +129,7 @@ export default function ButtonAppBar(props) {
     else {
       return (      
       <div>
-        <ComponentLogin disabled={props.currentPage.localeCompare("login")===0}/>
+        <ComponentLogin disabled={props.currentPage.localeCompare("login")===0} />
         <ComponentCreate disabled={props.currentPage.localeCompare("createAccount")===0}/>
         <ComponentLanguage />
       </div>);
@@ -141,13 +141,13 @@ export default function ButtonAppBar(props) {
       <AppBar className={classes.appBarColor} color="inherit">
         <Toolbar>
 
-          <Link to="/" className={classes.Home} style={{textDecoration: "none"}}>
+          <Link to="/" className={classes.Home} style={{textDecoration: "none"}} >
             <IconButton className={classes.Home} color="inherit" aria-label="Home">
                 <HomeIcon />
             </IconButton>
           </Link>
 
-          <Link to="/support" className={classes.support} className={buttonClicked()} style={{textDecoration: "none"}}>
+          <Link to="/support" className={classes.support} disabled={props.disabled} style={{textDecoration: "none"}}>
             <Button color="inherit">Tuki</Button>
           </Link>
           <Link to="/" className={classes.Logo} style={{textDecoration: "none"}}>
