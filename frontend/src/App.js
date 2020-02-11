@@ -11,6 +11,7 @@ import Calendar from './components/routes/calendar';
 import Login from './components/routes/login';
 import Create from './components/routes/createAccount';
 import About from './components/routes/about';
+import Profile from './components/routes/profile';
 
 /* Current page -variable shows the current page to the AppBar. */
 
@@ -55,6 +56,9 @@ function App() {
           </Route>
           <Route path="/activity">
             <p>Activity page</p>
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
         </Switch>
     </div>

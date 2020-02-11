@@ -1,0 +1,28 @@
+.page-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile {
+    margin: 20px;
+    height: 300px;
+    width: 50%;
+}
+
+.list {
+    margin: 20px;
+    width: 50%;
+}
+
+@media screen and (max-width: 900px) {
+    .page-wrapper {
+        display: flex;
+        flex-direction: column;
+   }
+   .profile {
+       width: auto;
+   }
+   .list {
+       width: auto;
+   }
+ }
