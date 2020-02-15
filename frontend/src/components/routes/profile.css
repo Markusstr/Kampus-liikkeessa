@@ -9,6 +9,13 @@
     width: 50%;
 }
 
+.profile-form {
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
 .list {
     margin: 20px;
     width: 50%;
@@ -25,4 +32,8 @@
    .list {
        width: auto;
    }
+ }
+
+.dialog-info {
+    width: 520px;
  }
