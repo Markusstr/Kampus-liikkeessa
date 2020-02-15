@@ -69,9 +69,8 @@ const Profile = (props) => {
                 body: JSON.stringify(bodyData)
             });
             let newData = await response.json();
-            console.log(newData);
             setLoading(true);
-            setOpen(false)
+            setOpen(false);
         }
         catch (err) {
             console.log(err);

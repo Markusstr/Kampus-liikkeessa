@@ -1,16 +1,43 @@
 import React, {useState, useEffect} from 'react';
 import { TextField, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 const Information = () => {
     const [values, setValues] = useState({
         username: '',
-        password: '',
+        passwordOld: '',
+        passwordNew: '',
         phoneNum: '',
         studentNum: ''
     });
 
     const handleChange = prop => event => {
         setValues({...values, [prop]: event.target.value});
+    }
+
+    const checkFields = () => {
+        if (values.username.length < 6) {
+            return (
+                <div>
+                    <Alert variant="filled" severity="error">
+                        Käyttäjänimi on liian lyhyt!
+                    </Alert>
+                </div>
+            )
+        }
+        if (values.password.length < 6) {
+            return (
+                <div>
+                    <Alert variant="filled" severity="error">
+                        Salasana ei täytä ehtoja!
+                    </Alert>
+                </div>
+            )
+        }
+    }
+
+    const onClickSubmit = async() => {
+        checkFields();
     }
 
     return (
@@ -31,18 +58,29 @@ const Information = () => {
                 <TextField
                     position='absolute'
                     margin="normal"
-                    id="outlined-password"
+                    id="outlined-passwordOld"
                     type="password"
                     value={values.password}
-                    label="Salasana"
+                    label="Vanha salasana"
                     InputLabelProps={{ shrink: true }} 
                     variant="outlined"
-                    onChange={handleChange("password")}
+                    onChange={handleChange("passwordOld")}
                     />
                 <TextField
                     position='absolute'
                     margin="normal"
-                    id="outlined-password"
+                    id="outlined-passwordNew"
+                    type="password"
+                    value={values.password}
+                    label="Uusi salasana"
+                    InputLabelProps={{ shrink: true }} 
+                    variant="outlined"
+                    onChange={handleChange("passwordNew")}
+                    />
+                <TextField
+                    position='absolute'
+                    margin="normal"
+                    id="outlined-studentNum"
                     type="text"
                     value={values.studentNum}
                     label="Opiskelijanumero"
@@ -53,7 +91,7 @@ const Information = () => {
                 <TextField
                     position='absolute'
                     margin="normal"
-                    id="outlined-password"
+                    id="outlined-phoneNum"
                     type="tel"
                     value={values.phoneNum}
                     label="Puhelinnumero"
@@ -61,7 +99,7 @@ const Information = () => {
                     variant="outlined"
                     onChange={handleChange("phoneNum")}
                     />
-                <Button variant="contained" color="primary">Tallenna muutokset</Button>
+                <Button variant="contained" color="primary" onClick={onClickSubmit} >Tallenna muutokset</Button>
             </form>
         </div>
     )
