@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 mongoose.connect('mongodb://localhost:27017/mydb', { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('Connected to database!');
 });
+mongoose.set('useFindAndModify', false);
 
 let server = app.listen(8080, () => {
     console.log('Started server!');

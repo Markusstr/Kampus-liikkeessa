@@ -165,6 +165,7 @@ const CreateRes = (props) => {
                 body: JSON.stringify(bodyData)
             });
             let newData = await response.json();
+            props.setSelectedDate(startDate);
             props.updateCalendar(true);
         }
         catch (err) {

@@ -12,6 +12,7 @@ import "./Calendar.css";
 
 import AutocompleteComponent from '../functions/autocomplete';
 import CreateRes from '../functions/createRes';
+import { Chip } from '@material-ui/core';
 
 const BigCalendar = (props) => {
     let localizer;
@@ -21,6 +22,7 @@ const BigCalendar = (props) => {
     const [update, setUpdate] = useState(false);
     const [open, setOpen] = useState(false);
     const [openReservation, setOpenReservation] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [eventInfo, setEventInfo] = useState({
         name: '',
         info: '',
@@ -210,14 +212,20 @@ const BigCalendar = (props) => {
             <AutocompleteComponent prop={setLocation} loggedStatus={props.loggedStatus} prop2={setCalendarUpdate} setOpen={handleOpenRes}/>
 
             {/*<p>Valittu tila: {locatiosn}</p>*/}
-
+            <div className="colours-container">
+                Varausten värit:
+                <br />
+                <Chip size="small" color="primary" style={{backgroundColor: "#cf970c", marginTop: "10px"}}label="Omat varaukset" />
+                <Chip size="small" color="primary" style={{backgroundColor: "#3165ac", marginLeft: "5px", marginTop: "10px"}}label="Muut varaukset" />
+            </div>
             <Calendar className="calendar-container"
                 messages={messages}
                 localizer={localizer}
                 events={events}
                 views={["week", "month"]}
                 defaultView={"week"}
-                defaultDate={new Date()}
+                date={selectedDate}
+                onNavigate={date => {setSelectedDate(date)}}
                 onSelectEvent={handleClickOpen}
                 titleAccessor={'info'}
                 scrollToTime={new Date(date.getFullYear(), date.getMonth(), date.getDate(), 8)}
@@ -264,7 +272,7 @@ const BigCalendar = (props) => {
                 </DialogActions>
             </Dialog>
 
-            <CreateRes updateCalendar={setCalendarUpdate} open={openReservation} handleClose={handleCloseRes} username={props.username} />
+            <CreateRes updateCalendar={setCalendarUpdate} open={openReservation} handleClose={handleCloseRes} username={props.username} setSelectedDate={setSelectedDate} />
         </div>
     );
 }
