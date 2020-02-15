@@ -9,12 +9,21 @@ let express = require('express'),
         reservationController.getReservations(req, res);
     });
 
+
+    router.post('/getReservationsByUser', (req, res) => {
+        reservationController.getReservationsByUser(req, res);
+    });
+
     router.post('/removeReservation', (req, res) => {
         reservationController.removeReservation(req, res);
     });
     
     router.post('/saveReservation', (req, res) => {
         reservationController.saveReservation(req, res);
+    });
+
+    router.post('/modifyReservation', (req, res) => {
+        reservationController.modifyReservation(req, res);
     });
 
 

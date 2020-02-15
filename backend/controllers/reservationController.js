@@ -10,6 +10,16 @@ exports.getReservations = async (req, res) => {
     }
 }
 
+exports.getReservationsByUser = async (req, res) => {
+    try {
+        const reservation = await Reservation.find({name: req.body.name});
+        res.status(200).json(reservation);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}
+
 exports.removeReservation = async (req, res) => {
     try {
         const reservation = await Reservation.deleteOne({_id: req.body.id});
@@ -31,6 +41,22 @@ exports.saveReservation = async (req, res) => {
     
     try {
         const savedReservation = await reservation.save();
+        res.status(200).json(savedReservation);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}
+
+exports.modifyReservation = async (req, res) => {
+    try {
+        const savedReservation = await Reservation.findByIdAndUpdate({_id: req.body.id}, {
+            name: req.body.name,
+            start: req.body.start,
+            end: req.body.end,
+            location: req.body.location,
+            info: req.body.info
+        })
         res.status(200).json(savedReservation);
     }
     catch (err) {
