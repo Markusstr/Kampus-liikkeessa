@@ -58,7 +58,7 @@ function App() {
             <p>Activity page</p>
           </Route>
           <Route path="/profile">
-            <Profile />
+            <Profile username={username}/>
           </Route>
         </Switch>
     </div>
