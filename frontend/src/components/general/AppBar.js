@@ -48,6 +48,7 @@ const useStyles = makeStyles(theme => ({
     position: "static",
   },
   makeGOright: {
+    display: "flex",
     color: "black",
     marginLeft: "auto",
     marginRight: 0,
@@ -156,6 +157,10 @@ export default function ButtonAppBar(props) {
             </IconButton>
           </Link>
           <div className={classes.makeGOright}>
+            {props.loggedStatus ?
+            <Link to="/profile" className={classes.make} style={{textDecoration: "none"}}>
+              <Button color="inherit" >Profiili</Button>
+            </Link> : ""}
             <AppBarContent />
           </div>
         </Toolbar>
