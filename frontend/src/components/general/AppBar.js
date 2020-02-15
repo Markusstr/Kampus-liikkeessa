@@ -26,6 +26,11 @@ const useStyles = makeStyles(theme => ({
     color: "black",
     marginLeft: theme.spacing(1),
   },
+  profile: {
+    marginTop: "6px",
+    color: "black",
+    marginLeft: theme.spacing(1),
+  },
   make: {
     color: "black",
     marginLeft: theme.spacing(1),
@@ -158,7 +163,7 @@ export default function ButtonAppBar(props) {
           </Link>
           <div className={classes.makeGOright}>
             {props.loggedStatus ?
-            <Link to="/profile" className={classes.make} style={{textDecoration: "none"}}>
+            <Link to="/profile" className={classes.profile} style={{textDecoration: "none"}}>
               <Button color="inherit" >Profiili</Button>
             </Link> : ""}
             <AppBarContent />
