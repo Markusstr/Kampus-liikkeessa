@@ -41,6 +41,7 @@ const Profile = (props) => {
     const [info, setInfo] = useState('');
     const [location, setLocation] = useState('')
     const [autocomplete, setAutocomplete] = useState('')
+    const [id, setId] = useState('')
     const [date, setDate] = useState({
         selDate: new Date(),
         startTime: new Date(),
@@ -63,8 +64,32 @@ const Profile = (props) => {
         setDate({...date, endTime: newDate});
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
+        let startDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.startTime.getHours(), date.startTime.getMinutes());
+        let endDate = new Date(date.selDate.getFullYear(), date.selDate.getMonth(), date.selDate.getDate(), date.endTime.getHours(), date.endTime.getMinutes());
+        const bodyData = {
+            name: props.username,
+            start: startDate,
+            end: endDate,
+            location: location,
+            info: info,
+            id: id
+        };
 
+        try {
+            let response = await fetch("http://localhost:8080/api/modifyReservation", {
+                method: "post",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(bodyData)
+            });
+            let newData = await response.json();
+            console.log(newData);
+            setLoading(true);
+            setOpen(false)
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     const handleClose = () => {
@@ -78,7 +103,9 @@ const Profile = (props) => {
             startTime: elem.start,
             endTime: elem.end
         })
-        setAutocomplete(elem.location)
+        setLocation(elem.location)
+        setAutocomplete(elem.location);
+        setId(elem.id);
         setOpen(true);
     }
 
@@ -108,10 +135,10 @@ const Profile = (props) => {
 
         async function fetchData() {
             const bodyData = {
-                location: "Monitoimisali"
+                name: props.username
             }
             try {
-                let response = await fetch('http://localhost:8080/api/getReservations', {
+                let response = await fetch('http://localhost:8080/api/getReservationsByUser', {
                     method: 'post',
                     headers: { 'Content-Type':'application/json'},
                     body: JSON.stringify(bodyData)
@@ -134,11 +161,11 @@ const Profile = (props) => {
             }
         }
         fetchData();
-    }, [loading]);
+    }, [loading, props.username]);
 
     useEffect(() => {
 
-        if (!loading) {
+        if (!loadingLocations) {
             return undefined;
         }
 
