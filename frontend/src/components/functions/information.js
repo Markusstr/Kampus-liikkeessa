@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import './information.css';
+import URL from '../general/config.js';
 
 const Information = (props) => {
     const [loadingUser, setLoadingUser] = useState(true)
@@ -26,7 +27,7 @@ const Information = (props) => {
                 username: props.username
             }
             try {
-                let response = await fetch('http://192.168.100.20:8080/api/loadUser', {
+                let response = await fetch(URL + "api/loadUser", {
                     method: 'post',
                     headers: { 'Content-Type':'application/json'},
                     body: JSON.stringify(bodyData)
@@ -93,7 +94,7 @@ const Information = (props) => {
                 password: values.passwordOld
             }
             try {
-                checkUser = await fetch('http://192.168.100.20:8080/api/checkUser', {
+                checkUser = await fetch(URL + "api/checkUser", {
                     method: 'post',
                     headers: { 'Content-Type':'application/json'},
                     body: JSON.stringify(bodyData)
@@ -122,7 +123,7 @@ const Information = (props) => {
                 }
                 console.log(bodyData);
                 try {
-                    let response = await fetch('http://192.168.100.20:8080/api/modifyUser', {
+                    let response = await fetch(URL + "api/modifyUser", {
                         method: 'post',
                         headers: { 'Content-Type':'application/json'},
                         body: JSON.stringify(bodyData)

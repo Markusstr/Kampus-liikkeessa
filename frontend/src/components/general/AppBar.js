@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import HomeIcon from '@material-ui/icons/Home';
+import URL_DB from './config';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,12 +101,34 @@ function ComponentLanguage() {
   );
 }
 
+async function deleteSessId (props) {
+  const bodyData = {
+    name: props.currUsername,
+    sessionID: props.SESSID,
+    newSessId: "00",
+  }
+  console.log("Trying to log out: "+ bodyData.name);
+  try {
+    let response = await fetch(URL_DB + 'api/logout', {
+        method: "post",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(bodyData)
+    });
+    response = await response.json();
+
+}
+catch (err) {
+    console.log(err);
+}
+}
+
 
 export default function ButtonAppBar(props) {
 
   const classes = useStyles();
 
-  const handleLogout = () => {
+  const handleLogout = (props) => {
+    deleteSessId(props);
     props.setLoggedStatus(false);
     props.setUsername('');
   }
@@ -126,7 +149,7 @@ export default function ButtonAppBar(props) {
           <Button 
             className={classes.logout}
             color="inherit"
-            onClick={() => {handleLogout()}}>
+            onClick={() => {handleLogout(props)}}>
             Kirjaudu ulos
             </Button>
           <ComponentLanguage />

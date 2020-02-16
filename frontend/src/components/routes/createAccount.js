@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,11 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-
-
-
-
-
+import crypto from 'crypto';
+import DB_URL from '../general/config';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -66,6 +64,10 @@ const useStyles = makeStyles(theme => ({
         position: "absolute",
         left: '23%',
         transform: 'translate(-50%)',
+    },
+    errMsg: {
+        color: "red",
+        textAlign: "center",
     },
 }));
 
@@ -129,9 +131,22 @@ export default function Create(props) {
         }
     }, []);
 
+    const [errMsg, setErrMessage] = useState({
+        errMsgFull: '',
+        isErrMsg: false,
+    });
+
+
     const [values, setValues] = useState({
+        firstName: '',
+        lastName: '',
+        studentNmb: '',
+        email: '',
+        emailAgain: '',
         password: '',
         passwordCheck: '',
+        phone: 0,
+        additional: '',
         showPassword: false,
         showPasswordCheck: false
     });
@@ -151,6 +166,85 @@ export default function Create(props) {
     const handleClickPasswordCheck = () => {
         setValues({...values, showPasswordCheck: !values.showPasswordCheck});
     };
+    
+    const checks = async () => {
+        let errThisErr = "";
+        let noErr = true;
+
+        if (values.password.localeCompare(values.passwordCheck) !== 0) {
+            noErr = false;
+            errThisErr = "Please, check your password.\n";
+        }
+        if (values.email.localeCompare(values.emailAgain) !== 0) {
+            noErr = false;
+            errThisErr = errThisErr.concat("Please, check your email addresses.\n");
+        }
+
+        console.log(errThisErr);
+        setErrMessage({...errMsg, 
+            errMsgFull: errThisErr,
+            isErrMsg: true});
+        return noErr;
+    }
+
+    const checkEmail = async () => {
+        let trimmedEmail = values.email.trim();
+        const emailSearch = {
+            email: trimmedEmail,
+        }
+        try {
+            let isEmail = await fetch(DB_URL +"api/isEmail", {
+                method: "post",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(emailSearch)
+            });
+            isEmail = await isEmail.json();
+            console.log(isEmail);
+            if (isEmail) {
+                let newErrMsg = errMsg.errMsgFull.concat("This email already exists.");
+                setErrMessage({
+                    ...errMsg, 
+                    errMsgFull: newErrMsg,
+                    isErrMsg: true,
+                })
+                console.log("true");
+                return true;
+            }
+            else {
+                console.log("false");                
+                return false;
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    const runCreateAccount = async () => {
+        const noErrors = await checks();
+        const isEmail = await checkEmail();
+        console.log("no errors status: " +noErrors + "\nisEmail Status:" + isEmail);
+        
+        if (noErrors && !isEmail) {
+            let newUsername = values.firstName.concat(values.lastName);
+            let newPassword = crypto.createHash('sha512').update(values.password).digest('hex');
+            console.log(newPassword+ "\nsessid:"+props.SESSID);
+            const confirmedValues = {
+                sessionID: props.SESSID.trim(),
+                email: values.email.trim(),
+                name: newUsername.trim(),
+                password: newPassword.trim(),
+                studentNum: values.studentNmb.trim(),
+            };
+            let response = await fetch(DB_URL +"api/saveUser", {
+                method: "post",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(confirmedValues)
+            });
+            response = await response.json();
+            console.log(response);
+        }
+    }
 
 
     return (
@@ -167,6 +261,7 @@ export default function Create(props) {
                         id="outlined-firstname"
                         label="Etunimi"
                         variant="outlined"
+                        onChange={handleChange("firstName")}
                         />
                         <TextField
                         className={classes.big}
@@ -175,6 +270,7 @@ export default function Create(props) {
                         id="outlined-surname"
                         label="Sukunimi"
                         variant="outlined"
+                        onChange={handleChange("lastName")}
                         />
                         <br/>
                         <TextField
@@ -185,6 +281,7 @@ export default function Create(props) {
                         id="outlined-phone"
                         label="Puhelin"
                         variant="outlined"
+                        onChange={handleChange("phone")}
                         />
                         <TextField
                         className={classes.big}
@@ -193,6 +290,7 @@ export default function Create(props) {
                         id="outlined-nro"
                         label="Opiskelijanumero"
                         variant="outlined"
+                        onChange={handleChange("studentNmb")}
                         />
                         <br/>
                         <TextField
@@ -203,6 +301,7 @@ export default function Create(props) {
                         id="outlined-email"
                         label="Sähköposti"
                         variant="outlined"
+                        onChange={handleChange("email")}
                         />
                         <TextField
                         className={classes.big}
@@ -212,6 +311,7 @@ export default function Create(props) {
                         id="outlined-emailAgain"
                         label="Sähköpostin vahvistus"
                         variant="outlined"
+                        onChange={handleChange("emailAgain")}
                         />
                         <br/>
                         <TextField
@@ -268,10 +368,12 @@ export default function Create(props) {
                         multiline
                         rows="6"
                         variant="outlined"
+                        onChange={handleChange("additional")}
                         />
                         <br/>
-                        <Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button>
-                        <Button className={classes.accept} color='inherit' variant="outlined">Luo</Button>
+                        {errMsg.isErrMsg ? <div className={classes.errMsg}>{errMsg.errMsgFull}</div>: <div></div>}
+                        <Link to="/"><Button className={classes.cancel} color='inherit' variant="outlined">Peruuta</Button></Link>
+                        <Button className={classes.accept} onClick={event=>{runCreateAccount()}} color='inherit' variant="outlined">Luo</Button>
                     </form>
                 </div>
                 <Paper elevation={3}>

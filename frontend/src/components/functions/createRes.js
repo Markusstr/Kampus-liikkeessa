@@ -13,6 +13,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
+import URL from '../general/config.js';
 
 
 const useStyles = makeStyles(theme => ({
@@ -104,7 +105,7 @@ const CreateRes = (props) => {
 
         async function fetchData() {
             try {
-                let response = await fetch("http://192.168.100.20:8080/api/getLocations");
+                let response = await fetch(URL + "api/getLocations");
                 let jsonData = await response.json()
                 setData(jsonData);
                 setLoading(false);
@@ -159,7 +160,7 @@ const CreateRes = (props) => {
 
         console.log(bodyData);
         try {
-            let response = await fetch("http://192.168.100.20:8080/api/saveReservation", {
+            let response = await fetch(URL + "api/saveReservation", {
                 method: "post",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(bodyData)
