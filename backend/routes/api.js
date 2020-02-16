@@ -27,7 +27,10 @@ let express = require('express'),
     });
 
 
-    router.post('/checkUsername', (req, res) => {
+    // router.post('/checkUsername', (req, res) => {
+    //     userController.checkUsername(req, res);
+    // });
+    router.post('/login', (req, res) => {
         userController.checkUsername(req, res);
     });
 

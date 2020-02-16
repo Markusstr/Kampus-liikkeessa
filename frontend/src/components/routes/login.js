@@ -7,6 +7,8 @@ import { InputAdornment } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import Box from '@material-ui/core/Box';
 import {Redirect} from 'react-router-dom';
+import URL_DB from '../general/config'
+import crypto from 'crypto';
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,7 +65,28 @@ export default function Login(props) {
         setValues({...values, showPassword: !values.showPassword});
     };
 
+    const loginAwait = async () => {
+        //hash password
+        let newPassword = crypto.createHash('sha512').update(values.password).digest('hex');
+
+        const bodyData = {
+            username: values.username,
+            password: newPassword
+        };
+
+        let response = await fetch(URL_DB +"api/login", {
+            method: "post",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(bodyData)
+        });
+        console.log(response);
+
+    }
+
+
     const handleLogin = () => {
+        // checking with the database
+        loginAwait();
         props.setLoggedStatus(true);
         props.setUsername(values.username);
         console.log("Success handle");

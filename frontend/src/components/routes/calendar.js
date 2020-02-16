@@ -13,6 +13,7 @@ import "./Calendar.css";
 import AutocompleteComponent from '../functions/autocomplete';
 import CreateRes from '../functions/createRes';
 import { Chip } from '@material-ui/core';
+import URL from '../general/config.js';
 
 const BigCalendar = (props) => {
     let localizer;
@@ -43,7 +44,7 @@ const BigCalendar = (props) => {
                 location: location
             };
             try {
-                let response = await fetch("http://localhost:8080/api/getReservations", {
+                let response = await fetch(URL +"api/getReservations", {
                     method: "post",
                     headers: {"Content-Type":"application/json"},
                     body: JSON.stringify(bodyData)
