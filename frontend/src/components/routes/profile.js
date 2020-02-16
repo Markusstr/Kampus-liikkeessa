@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import './profile.css';
-import { List, ListItem, ListItemText, Divider, ListItemSecondaryAction, IconButton, Typography, TextField, InputAdornment, DialogActions } from '@material-ui/core';
+import { List, ListItem, ListItemText, Divider, ListItemSecondaryAction, IconButton, Typography, TextField, DialogActions } from '@material-ui/core';
 import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -13,6 +12,7 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Information from "../functions/information"
 
 const Profile = (props) => {
 
@@ -21,20 +21,6 @@ const Profile = (props) => {
     const [loadingLocations, setLoadingLocations] = useState(true);
     const [locationsData, setLocationsData] = useState([]);
     const [data, setData] = useState([]);
-
-    const [values, setValues] = useState({
-        username: '',
-        password: '',
-        showPassword: false
-    });
-
-    const handleChange = prop => event => {
-        setValues({...values, [prop]: event.target.value});
-    }
-
-    const handleClickPassword = () => {
-        setValues({...values, showPassword: !values.showPassword});
-    };
 
     //List view
     const [open, setOpen] = useState(false)
@@ -83,9 +69,8 @@ const Profile = (props) => {
                 body: JSON.stringify(bodyData)
             });
             let newData = await response.json();
-            console.log(newData);
             setLoading(true);
-            setOpen(false)
+            setOpen(false);
         }
         catch (err) {
             console.log(err);
@@ -188,44 +173,7 @@ const Profile = (props) => {
     return (
         <div>
             <div className="page-wrapper">
-                <div className="profile">
-                    <form className="profile-form" noValidate autoComplete="off">
-                        <TextField
-                            position='absolute'
-                            margin="normal" 
-                            id="outlined-username" 
-                            value={values.username}
-                            label="Käyttäjätunnus/sähköposti" 
-                            type="text" 
-                            InputLabelProps={{ shrink: true }} 
-                            variant="outlined"
-                            onChange={handleChange("username")}
-                        />
-                        <TextField
-                            position='absolute'
-                            margin="normal"
-                            id="outlined-password" 
-                            type={values.showPassword ? "text" : "password"}
-                            value={values.password}
-                            label="Salasana"
-                            InputLabelProps={{ shrink: true }} 
-                            variant="outlined"
-                            onChange={handleChange("password")}
-                            InputProps={{
-                                endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password"
-                                        onClick={handleClickPassword}
-                                        edge="end">
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                </InputAdornment>
-                                ),
-                            }}
-                            />
-                    </form>
-                </div>
+                <Information />
                 <div className="list">
                     Omat varaukset:
                     {data.map(elem =>
