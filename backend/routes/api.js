@@ -26,11 +26,6 @@ let express = require('express'),
         reservationController.modifyReservation(req, res);
     });
 
-
-    router.post('/checkUsername', (req, res) => {
-        userController.checkUsername(req, res);
-    });
-
     router.post('/checkUser', (req, res) => {
         userController.checkUser(req, res);
     });
@@ -47,13 +42,21 @@ let express = require('express'),
         userController.saveUser(req, res);
     });
 
+    router.post('/modifyUser', (req, res) => {
+        userController.modifyUser(req, res);
+    });
+
+    router.post('/loadUser', (req, res) => {
+        userController.loadUser(req, res);
+    });
+
 
     router.get('/getLocations', (req, res) => {
         locationController.getLocations(req, res);
-    })
+    });
 
     router.post('/saveLocation', (req, res) => {
         locationController.saveLocation(req, res);
-    })
+    });
 
     module.exports = router;

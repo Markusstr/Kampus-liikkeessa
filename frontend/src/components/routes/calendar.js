@@ -43,7 +43,7 @@ const BigCalendar = (props) => {
                 location: location
             };
             try {
-                let response = await fetch("http://localhost:8080/api/getReservations", {
+                let response = await fetch("http://192.168.100.20:8080/api/getReservations", {
                     method: "post",
                     headers: {"Content-Type":"application/json"},
                     body: JSON.stringify(bodyData)
@@ -97,7 +97,7 @@ const BigCalendar = (props) => {
         };
         console.log(bodyData);
         try {
-            let response = await fetch("http://localhost:8080/api/removeReservation", {
+            let response = await fetch("http://192.168.100.20:8080/api/removeReservation", {
                 method: "post",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(bodyData)

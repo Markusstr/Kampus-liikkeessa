@@ -1,23 +1,19 @@
 let User = require("../models/User");
 
-exports.checkUsername = async (req, res) => {
-    try {
-        const user = await User.findOne({username: req.body.username});
-        res.status(200).json(user);
-    }
-    catch (err) {
-        res.status(404).json({error: err});
-    }
-}
-
 exports.checkUser = async (req, res) => {
     try {
-        const user = await User.find({username: req.body.username, password: req.body.password});
-        res.status(200).json(user);
+        const user = await User.findOne({username: req.body.username, password: req.body.password});
+        if (user === null) {
+            res.status(200).json(false);
+        }
+        else {
+            res.status(200).json(true);
+        }
     }
     catch (err) {
         res.status(404).json({error: err});
     }
+    
 }
 
 exports.loadUserByID = async (req, res) => {
@@ -43,7 +39,8 @@ exports.saveUser = async (req, res) => {
     const user = new User({
         username: req.body.username,
         password: req.body.password,
-        sessionID: req.body.sessionID
+        studentNum: req.body.studentNum,
+        phoneNum: req.body.phoneNum
     });
 
     try {
@@ -54,3 +51,35 @@ exports.saveUser = async (req, res) => {
         res.status(404).json({error: err});
     }
 };
+
+exports.modifyUser = async (req, res) => {
+    try {
+        /*const user = await User.findByIdAndUpdate({_id: req.body.id}, {
+            name: req.body.name,
+            start: req.body.start,
+            end: req.body.end,
+            location: req.body.location,
+            info: req.body.info
+        });*/
+        const user = await User.findOneAndUpdate({username: req.body.username}, {
+            username: req.body.username,
+            password: req.body.password,
+            studentNum: req.body.studentNum,
+            phoneNum: req.body.phoneNum
+        });
+        res.status(200).json(true);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}
+
+exports.loadUser = async (req, res) => {
+    try {
+        const user = await User.findOne({username: req.body.username});
+        res.status(200).json(user);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}

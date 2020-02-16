@@ -63,7 +63,7 @@ const Profile = (props) => {
         };
 
         try {
-            let response = await fetch("http://localhost:8080/api/modifyReservation", {
+            let response = await fetch("http://192.168.100.20:8080/api/modifyReservation", {
                 method: "post",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(bodyData)
@@ -100,7 +100,7 @@ const Profile = (props) => {
         };
 
         try {
-            let response = await fetch("http://localhost:8080/api/removeReservation", {
+            let response = await fetch("http://192.168.100.20:8080/api/removeReservation", {
                 method: "post",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(bodyData)
@@ -123,7 +123,7 @@ const Profile = (props) => {
                 name: props.username
             }
             try {
-                let response = await fetch('http://localhost:8080/api/getReservationsByUser', {
+                let response = await fetch('http://192.168.100.20:8080/api/getReservationsByUser', {
                     method: 'post',
                     headers: { 'Content-Type':'application/json'},
                     body: JSON.stringify(bodyData)
@@ -156,7 +156,7 @@ const Profile = (props) => {
 
         async function fetchData() {
             try {
-                let response = await fetch("http://localhost:8080/api/getLocations");
+                let response = await fetch("http://192.168.100.20:8080/api/getLocations");
                 let jsonData = await response.json()
                 setLocationsData(jsonData);
                 setLoadingLocations(false);
@@ -173,7 +173,7 @@ const Profile = (props) => {
     return (
         <div>
             <div className="page-wrapper">
-                <Information />
+                <Information username={props.username} />
                 <div className="list">
                     Omat varaukset:
                     {data.map(elem =>

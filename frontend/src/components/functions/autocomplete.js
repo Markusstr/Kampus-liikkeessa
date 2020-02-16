@@ -32,7 +32,7 @@ const AutocompleteComponent = props => {
 
         async function fetchData() {
             try {
-                let response = await fetch("http://localhost:8080/api/getLocations");
+                let response = await fetch("http://192.168.100.20:8080/api/getLocations");
                 let jsonData = await response.json()
                 setData(jsonData);
                 setLoading(false);
