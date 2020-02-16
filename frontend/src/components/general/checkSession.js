@@ -16,7 +16,7 @@ async function sessionIdChecker(setLoggedStatus, setUsername) {
             body: JSON.stringify(bodyData)
         });
         response = await response.json();
-        console.log(response);
+        //console.log(response);
         if (response.responseValue) {
             setLoggedStatus(true);
             setUsername(response.username);

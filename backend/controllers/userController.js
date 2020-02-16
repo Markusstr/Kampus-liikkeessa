@@ -17,11 +17,11 @@ exports.checkUsername = async (req, res) => {
                 responseValue = true;
             }
             else {
-                console.log("failed at securing password");
+                // console.log("failed at securing password");
             }
         }
         else {
-            console.log("failed at finding user");
+            // console.log("failed at finding user");
             responseValue = false;
         }
         res.status(200).json(responseValue);
@@ -36,11 +36,11 @@ exports.checkUsername = async (req, res) => {
 exports.checkSessionid = async (req, res) =>  {
     let response = false;
     try {
-        console.log("Searching sessionid: "+ req.body.sessionID);
+        // console.log("Searching sessionid: "+ req.body.sessionID);
         const user = await User.findOne({sessionID: req.body.sessionID});
-        console.log(user);
-        console.log(user.name);
-        console.log(user.email);
+        // console.log(user);
+        // console.log(user.name);
+        // console.log(user.email);
         if (user !== null) {
             response = {
                 responseValue: true,
@@ -60,17 +60,17 @@ exports.checkSessionid = async (req, res) =>  {
     }
 }
 
-exports.checkUser = async (req, res) => {
-    try {
-        console.log("Searching user "+ req.body.username);
-        const user = await User.find({username: req.body.username, password: req.body.password});
+// exports.checkUser = async (req, res) => {
+//     try {
+//         // console.log("Searching user "+ req.body.username);
+//         const user = await User.find({username: req.body.username, password: req.body.password});
 
-        res.status(200).json(user);
-    }
-    catch (err) {
-        res.status(404).json({error: err});
-    }
-}
+//         res.status(200).json(user);
+//     }
+//     catch (err) {
+//         res.status(404).json({error: err});
+//     }
+// }
 
 exports.loadUserByID = async (req, res) => {
     try {
@@ -142,7 +142,7 @@ const updateIdClear = async (username, sessid) => {
 };
 
 exports.saveUser = async (req, res) => {
-    console.log(req.body.sessionID);
+    // console.log(req.body.sessionID);
 
     const user = new User({
 
@@ -156,7 +156,7 @@ exports.saveUser = async (req, res) => {
 
     try {
         const savedUser = await user.save();
-        res.status(200).json("success");
+        res.status(200).json(true);
     }
     catch (err) {
         res.status(404).json({error: err});

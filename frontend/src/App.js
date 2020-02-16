@@ -73,6 +73,8 @@ function App() {
           </Route>
           <Route path="/createAccount">
             <Create handleCurrentPage={handleCurrentPage}
+              handleLogin={handleLogin}
+              handleSetUsername={handleUsernameChange}
               SESSID={SESSID}/>
           </Route>
           <Route path="/activity">

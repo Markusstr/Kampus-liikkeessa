@@ -79,7 +79,7 @@ export default function Login(props) {
     const loginAwait = async () => {
         //hash password
         let newPassword = crypto.createHash('sha512').update(values.password).digest('hex');
-        console.log(props.SESSID);
+        // console.log(props.SESSID);
         const bodyData = {
             name: values.username,
             password: newPassword,
@@ -93,7 +93,7 @@ export default function Login(props) {
             });
             response = await response.json();
             if (response) {
-                console.log(response);
+                // console.log(response);
                 return true;
             }
 
@@ -112,10 +112,10 @@ export default function Login(props) {
         if (loginBoolean) {
             props.setLoggedStatus(true);
             props.setUsername(values.username);
-            console.log("Success handle");
+            // console.log("Success handle");
         }
         else {
-            console.log("Login failed!");
+            // console.log("Login failed!");
             setErrMsg({...errMsg,
                 isErr: true,
             });

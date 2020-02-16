@@ -169,6 +169,9 @@ export default function Create(props) {
     
     const checks = async () => {
         let errThisErr = "";
+        setErrMessage({...errMsg, 
+            errMsgFull: errThisErr,
+            isErrMsg: false});
         let noErr = true;
 
         if (values.password.localeCompare(values.passwordCheck) !== 0) {
@@ -180,7 +183,7 @@ export default function Create(props) {
             errThisErr = errThisErr.concat("Please, check your email addresses.\n");
         }
 
-        console.log(errThisErr);
+        //console.log(errThisErr);
         setErrMessage({...errMsg, 
             errMsgFull: errThisErr,
             isErrMsg: true});
@@ -199,7 +202,7 @@ export default function Create(props) {
                 body: JSON.stringify(emailSearch)
             });
             isEmail = await isEmail.json();
-            console.log(isEmail);
+            // console.log(isEmail);
             if (isEmail) {
                 let newErrMsg = errMsg.errMsgFull.concat("This email already exists.");
                 setErrMessage({
@@ -207,11 +210,11 @@ export default function Create(props) {
                     errMsgFull: newErrMsg,
                     isErrMsg: true,
                 })
-                console.log("true");
+                //console.log("true");
                 return true;
             }
             else {
-                console.log("false");                
+                //console.log("false");                
                 return false;
             }
         }
@@ -223,12 +226,12 @@ export default function Create(props) {
     const runCreateAccount = async () => {
         const noErrors = await checks();
         const isEmail = await checkEmail();
-        console.log("no errors status: " +noErrors + "\nisEmail Status:" + isEmail);
+        // console.log("no errors status: " +noErrors + "\nisEmail Status:" + isEmail);
         
         if (noErrors && !isEmail) {
             let newUsername = values.firstName.concat(values.lastName);
             let newPassword = crypto.createHash('sha512').update(values.password).digest('hex');
-            console.log(newPassword+ "\nsessid:"+props.SESSID);
+            // console.log(newPassword+ "\nsessid:"+props.SESSID);
             const confirmedValues = {
                 sessionID: props.SESSID.trim(),
                 email: values.email.trim(),
@@ -242,7 +245,10 @@ export default function Create(props) {
                 body: JSON.stringify(confirmedValues)
             });
             response = await response.json();
-            console.log(response);
+            if (response) {
+                props.handleLogin(true);
+                props.handleSetUsername(values.username);
+            }
         }
     }
 

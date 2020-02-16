@@ -107,7 +107,7 @@ async function deleteSessId (props) {
     sessionID: props.SESSID,
     newSessId: "00",
   }
-  console.log("Trying to log out: "+ bodyData.name);
+  // console.log("Trying to log out: "+ bodyData.name);
   try {
     let response = await fetch(URL_DB + 'api/logout', {
         method: "post",

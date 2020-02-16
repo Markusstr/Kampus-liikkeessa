@@ -2,7 +2,7 @@ import crypto from 'crypto';
 
 function sessionIdAccess() {
     let SESSID = sessionStorage.getItem('sessid');
-    console.log(SESSID);
+    //console.log(SESSID);
 
     if (SESSID !== null) {
         return SESSID;
