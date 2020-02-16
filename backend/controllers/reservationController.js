@@ -56,7 +56,7 @@ exports.modifyReservation = async (req, res) => {
             end: req.body.end,
             location: req.body.location,
             info: req.body.info
-        })
+        });
         res.status(200).json(savedReservation);
     }
     catch (err) {

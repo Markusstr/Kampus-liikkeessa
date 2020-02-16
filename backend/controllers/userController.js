@@ -1,12 +1,28 @@
 let User = require("../models/User");
 const crypto = require('crypto');
 
+exports.checkUser = async (req, res) => {
+    try {
+        const user = await User.findOne({username: req.body.username, password: req.body.password});
+        if (user === null) {
+            res.status(200).json(false);
+        }
+        else {
+            res.status(200).json(true);
+        }
+    }
+    catch(err) {
+        console.log(err);
+        res.status(404).json({error: err});
+    }
+}
+
 exports.checkUsername = async (req, res) => {
     console.log("Searching user "+ req.body.name);
     let responseValue = false;
 
     try {
-        const user = await User.findOne({name: req.body.name});
+        const user = await User.findOne({username: req.body.name});
         if (user !== null) {
             const passOk = req.body.password.localeCompare(user.password);
             console.log("This password from user: " + user.password);
@@ -60,18 +76,6 @@ exports.checkSessionid = async (req, res) =>  {
     }
 }
 
-// exports.checkUser = async (req, res) => {
-//     try {
-//         // console.log("Searching user "+ req.body.username);
-//         const user = await User.find({username: req.body.username, password: req.body.password});
-
-//         res.status(200).json(user);
-//     }
-//     catch (err) {
-//         res.status(404).json({error: err});
-//     }
-// }
-
 exports.loadUserByID = async (req, res) => {
     try {
         const user = await User.findOne({sessionID: req.body.sessionID});
@@ -87,7 +91,7 @@ exports.updateID = async (req, res) => {
     let user;
     console.log("Trying to log out: " + req.body.name);
     try {
-        user = await User.findOne({name: req.body.name});
+        user = await User.findOne({username: req.body.name});
         console.log(user);
         if (user !== null) {
             console.log(req.body.sessionID)
@@ -95,7 +99,7 @@ exports.updateID = async (req, res) => {
             // console.log(req.body.password);
             if (sessOk === 0) {
                 console.log("Logging out user " + user.name + "Setting newSessid to: " + req.body.newSessId);
-                await updateIdClear(user.name, req.body.newSessId);
+                await updateIdClear(user.username, req.body.newSessId);
                 responseValue = true;
 
             }
@@ -116,7 +120,7 @@ exports.isEmail = async (req, res) => {
     console.log("finding email: " + req.body.email);
     const user = await User.findOne({email: req.body.email});
     if (user !== null) {
-        console.log("Found user: " + user.name);
+        console.log("Found user: " + user.username);
         res.status(200).json(true);
 
     }
@@ -130,7 +134,7 @@ const updateIdClear = async (username, sessid) => {
     console.log("Logging in or out as: ", username);
     try {
         console.log("Trying to update sessid:" + sessid);
-        await User.updateOne({name: username}, {sessionID: sessid}, err => {
+        await User.updateOne({username: username}, {sessionID: sessid}, err => {
             console.log(err);
         });
         console.log("Update done!");
@@ -148,9 +152,10 @@ exports.saveUser = async (req, res) => {
 
         sessionID: req.body.sessionID,
         email: req.body.email,
-        name: req.body.name,
+        username: req.body.name,
         password: req.body.password,
         studentNum: req.body.studentNum,
+        phoneNum: req.body.phoneNum
     });
     console.log(user);
 
@@ -162,3 +167,35 @@ exports.saveUser = async (req, res) => {
         res.status(404).json({error: err});
     }
 };
+
+exports.modifyUser = async (req, res) => {
+    try {
+        /*const user = await User.findByIdAndUpdate({_id: req.body.id}, {
+            name: req.body.name,
+            start: req.body.start,
+            end: req.body.end,
+            location: req.body.location,
+            info: req.body.info
+        });*/
+        const user = await User.findOneAndUpdate({username: req.body.username}, {
+            username: req.body.username,
+            password: req.body.password,
+            studentNum: req.body.studentNum,
+            phoneNum: req.body.phoneNum
+        });
+        res.status(200).json(true);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}
+
+exports.loadUser = async (req, res) => {
+    try {
+        const user = await User.findOne({username: req.body.username});
+        res.status(200).json(user);
+    }
+    catch (err) {
+        res.status(404).json({error: err});
+    }
+}

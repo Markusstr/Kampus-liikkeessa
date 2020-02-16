@@ -56,10 +56,10 @@ let express = require('express'),
 
     router.get('/getLocations', (req, res) => {
         locationController.getLocations(req, res);
-    })
+    });
 
     router.post('/saveLocation', (req, res) => {
         locationController.saveLocation(req, res);
-    })
+    });
 
     module.exports = router;

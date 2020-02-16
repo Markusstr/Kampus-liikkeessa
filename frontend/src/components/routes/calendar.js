@@ -98,7 +98,7 @@ const BigCalendar = (props) => {
         };
         console.log(bodyData);
         try {
-            let response = await fetch("http://localhost:8080/api/removeReservation", {
+            let response = await fetch(URL + "api/removeReservation", {
                 method: "post",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(bodyData)

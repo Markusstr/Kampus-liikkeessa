@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import URL from '../general/config.js';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,7 +33,7 @@ const AutocompleteComponent = props => {
 
         async function fetchData() {
             try {
-                let response = await fetch("http://localhost:8080/api/getLocations");
+                let response = await fetch(URL + "api/getLocations");
                 let jsonData = await response.json()
                 setData(jsonData);
                 setLoading(false);

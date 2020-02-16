@@ -10,7 +10,7 @@ let UserSchema = mongoose.Schema({
         required: true,
         distinct: true,
     },
-    name: {
+    username: {
         type: String,
         required: true,
     },
@@ -23,7 +23,7 @@ let UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    address: String
+    phoneNum: String
 });
 
 module.exports = mongoose.model('User', UserSchema);
