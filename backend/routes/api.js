@@ -33,6 +33,13 @@ let express = require('express'),
     router.post('/login', (req, res) => {
         userController.checkUsername(req, res);
     });
+    router.post('/logout', (req, res) => {
+        userController.updateID(req, res);
+    });
+    // Check by session id if id matches a user in the database
+    router.post('/sessionlogin', (req, res) => {
+        userController.checkSessionid(req, res);
+    });
 
     router.post('/checkUser', (req, res) => {
         userController.checkUser(req, res);
@@ -42,14 +49,16 @@ let express = require('express'),
         userController.loadUserByID(req, res);
     });
 
-    router.post('/updateID', (req, res) => {
-        userController.updateID(req, res);
-    });
+    // router.post('/updateID', (req, res) => {
+    //     userController.updateID(req, res);
+    // });
 
     router.post('/saveUser', (req, res) => {
         userController.saveUser(req, res);
     });
-
+    router.post('/isEmail', (req, res) => {
+        userController.isEmail(req, res);
+    });
 
     router.get('/getLocations', (req, res) => {
         locationController.getLocations(req, res);
